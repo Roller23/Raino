@@ -2,7 +2,7 @@
   
   let loggingIn: boolean = true;
 
-  get('#signup-btn')!.on('click', function(this: HTMLElement, e: Event): void {
+  get('#signup-btn')!.on('click', function(this: HTMLElement, e): void {
     const wrapper = get('.form-nickname-wrapper') as HTMLElement;
     const swapIn = get('.swap-wrap .in') as HTMLElement;
     const swapUp = get('.swap-wrap .up') as HTMLElement;

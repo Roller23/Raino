@@ -8,10 +8,10 @@ const get = (selector: string): HTMLElement | null => {
 }
 
 interface HTMLElement {
-  on(event: string, callback: any): HTMLElement;
+  on(event: string, callback: EventListenerOrEventListenerObject): HTMLElement;
 }
 
-HTMLElement.prototype.on = function(this: HTMLElement, event: string, callback: any): HTMLElement {
+HTMLElement.prototype.on = function(this: HTMLElement, event: string, callback: EventListenerOrEventListenerObject): HTMLElement {
   this.addEventListener(event, callback);
   return this;
 }
