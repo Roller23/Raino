@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>RAINO</title>
-  <link href='http://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="styles/css/main.css">
 </head>
 <body>
@@ -12,12 +12,23 @@
     <div class="blur-layer"></div>
     <img class="logo" src="images/logo.png">
     <div class="right">
-      <div class="header">Sign in</div>
-      <input type="text" placeholder="E-Mail">
-      <input type="password" placeholder="Password">
-      <div class="small">or <span class="sign">sign up</span></div>
+      <div class="header">
+        Sign
+        <div class="swap-wrap">
+          <div class="in">in</div>
+          <div class="up">up</div>
+        </div>
+      </div>
+      <input type="email" placeholder="E-Mail" id="form-email">
+      <input type="password" placeholder="Password" id="form-password">
+      <div class="form-nickname-wrapper">
+        <input type="text" placeholder="Nickname" id="form-nickname">
+      </div>
+      <div class="small">or <span class="sign" id="signup-btn">sign up</span></div>
       <button type="button" class="login">Continue</button>
     </div>
   </div>
+  <script src="scripts/javascript/utils.js"></script>
+  <script src="scripts/javascript/login.js"></script>
 </body>
 </html>
