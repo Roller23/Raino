@@ -67,7 +67,25 @@ body {
 .login-container .right .header {
   color: white;
   font-size: 40px;
+  height: 40px;
   font-weight: bold;
+  margin-bottom: 10px;
+}
+.login-container .right .header .swap-wrap {
+  display: inline-block;
+  height: 100%;
+  vertical-align: top;
+}
+.login-container .right .header .swap-wrap .in, .login-container .right .header .swap-wrap .up {
+  transition: 0.3s;
+}
+.login-container .right .header .swap-wrap .in {
+  height: 100%;
+  overflow: hidden;
+}
+.login-container .right .header .swap-wrap .up {
+  height: 0%;
+  opacity: 0;
 }
 .login-container .right input {
   width: 100%;
@@ -83,10 +101,18 @@ body {
 .login-container .right input::placeholder {
   color: #afafaf;
 }
+.login-container .right .form-nickname-wrapper {
+  width: 100%;
+  height: 0px;
+  transition: 0.3s;
+  overflow: hidden;
+}
 .login-container .right .small {
   color: #afafaf;
   font-size: 12px;
   margin-left: 5px;
+  overflow: hidden;
+  transition: 0.3s;
 }
 .login-container .right .small .sign {
   color: white;
