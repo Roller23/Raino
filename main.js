@@ -10,7 +10,7 @@ function createWindow () {
     frame: isMacOS,
     titleBarStyle: 'hidden',
     webPreferences: {
-      
+      nodeIntegration: true
     }
   })
 

@@ -62,13 +62,13 @@ body {
     }
 
     #closeBtn {
-      grid-column: 1;
+      grid-column: 3;
     }
     #minimizeBtn {
-      grid-column: 2;
+      grid-column: 1;
     }
     #maximizeBtn {
-      grid-column: 3;
+      grid-column: 2;
     }
   }
 }

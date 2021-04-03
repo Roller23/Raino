@@ -56,13 +56,13 @@ body {
   opacity: 1 !important;
 }
 .titlebar .window-controls #closeBtn {
-  grid-column: 1;
+  grid-column: 3;
 }
 .titlebar .window-controls #minimizeBtn {
-  grid-column: 2;
+  grid-column: 1;
 }
 .titlebar .window-controls #maximizeBtn {
-  grid-column: 3;
+  grid-column: 2;
 }
 
 .login-container {
