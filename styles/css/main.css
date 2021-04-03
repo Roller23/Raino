@@ -190,5 +190,9 @@ body {
 .login-container .right .login:hover::after {
   content: "To the infinity and beyond!";
 }
+.login-container .right .login:active {
+  transition: 0.1s;
+  transform: scale(1);
+}
 
 /*# sourceMappingURL=main.css.map */
