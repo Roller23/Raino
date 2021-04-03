@@ -2,10 +2,10 @@
   
   let loggingIn: boolean = true;
 
-  get('#signup-btn')!.on('click', function(this: HTMLElement, e): void {
-    const wrapper = get('.form-nickname-wrapper') as HTMLElement;
-    const swapIn = get('.swap-wrap .in') as HTMLElement;
-    const swapUp = get('.swap-wrap .up') as HTMLElement;
+  get('#signup-btn')!.on('click', function(this: HTMLElement, e: Event): void {
+    const wrapper = get('.form-nickname-wrapper')!;
+    const swapIn = get('.swap-wrap .in')!;
+    const swapUp = get('.swap-wrap .up')!;
     loggingIn = !loggingIn;
     if (!loggingIn) {
       wrapper.style.height = wrapper.scrollHeight + 'px';
