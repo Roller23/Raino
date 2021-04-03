@@ -1,17 +1,27 @@
 {
   "name": "raino",
   "version": "1.0.0",
-  "description": "",
+  "description": "A chat app",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "appId": "com.electron.raino",
+    "productName": "Raino",
+    "mac": {
+      "category": "your.app.category.type"
+    }
   },
   "keywords": [],
-  "author": "",
+  "author": "Raino team",
   "license": "ISC",
-  "dependencies": {
+  "devDependencies": {
     "electron": "^12.0.2",
+    "electron-builder": "^22.10.5",
     "typescript": "^4.2.3"
   }
 }
