@@ -24,8 +24,8 @@ body {
 }
 .titlebar .window-controls {
   display: grid;
-  grid-template-columns: repeat(3, 16px);
-  grid-gap: 12px;
+  grid-template-columns: repeat(3, 14px);
+  grid-gap: 10px;
   position: absolute;
   top: 0;
   left: 12px;
@@ -40,8 +40,19 @@ body {
   height: 100%;
 }
 .titlebar .window-controls .button .icon {
-  height: 16px;
-  width: 16px;
+  height: 14px;
+  width: 14px;
+  z-index: 1;
+}
+.titlebar .window-controls .button .icon-hover {
+  height: 14px;
+  width: 14px;
+  position: absolute;
+  opacity: 0;
+  z-index: 2;
+}
+.titlebar .window-controls .button:hover .icon-hover {
+  opacity: 1 !important;
 }
 .titlebar .window-controls #closeBtn {
   grid-column: 1;
