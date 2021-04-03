@@ -47,10 +47,10 @@ function manageShortcuts() {
   globalShortcut.register('CommandOrControl+Shift+=',()=>{});
   // for debuging purposes
   // globalShortcut.register('CommandOrControl+W',()=>{}); 
-
 }
 
-app.whenReady().then(() => {
+function initTray() {
+  if (isMacOS) return; // building Tray breaks builds on MacOS
   tray = new Tray('images/tray-icon.png')
   const contextMenu = Menu.buildFromTemplate([
     {label: "Show", type: "normal", click: () => {
@@ -63,6 +63,10 @@ app.whenReady().then(() => {
   tray.on('double-click', () => {
     BrowserWindow.getAllWindows().forEach((e) => e.show())
   })
+}
+
+app.whenReady().then(() => {
+  initTray()
   createWindow()
   manageShortcuts()
 
