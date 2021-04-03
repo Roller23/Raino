@@ -1,7 +1,8 @@
-const { app, BrowserWindow } = require('electron')
+const { app, Menu, Tray, BrowserWindow } = require('electron')
 const path = require('path')
 
 const isMacOS = (process.platform === "darwin")
+let tray = null
 
 function createWindow () {
   const win = new BrowserWindow({
@@ -20,6 +21,12 @@ function createWindow () {
 }
 
 app.whenReady().then(() => {
+  tray = new Tray('images/tray-icon.png')
+  const contextMenu = Menu.buildFromTemplate([
+    {label: "Quit", type: "normal", role: "quit"}
+  ])
+  tray.setToolTip("RAINO")
+  tray.setContextMenu(contextMenu)
   createWindow()
 
   app.on('activate', () => {
