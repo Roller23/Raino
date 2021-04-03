@@ -43,11 +43,11 @@ body {
 }
 .login-container .logo {
   position: absolute;
-  left: 40px;
-  top: 50px;
+  left: 50px;
+  top: 70px;
   color: white;
   display: block;
-  width: 120px;
+  width: 125px;
   user-select: none;
 }
 .login-container .right {
