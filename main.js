@@ -1,14 +1,18 @@
-const { app, BrowserWindow } = require('electron')
-const path = require('path')
+const { app, Menu, Tray, BrowserWindow } = require('electron')
+
+const isMacOS = (process.platform === "darwin")
+let tray = null
 
 function createWindow () {
   const win = new BrowserWindow({
     width: 900,
     height: 600,
-    // frame: false,
+    frame: isMacOS,
     titleBarStyle: 'hidden',
     webPreferences: {
-      
+      nodeIntegration: true,
+      enableRemoteModule: true,
+      contextIsolation: false
     }
   })
 
@@ -16,6 +20,18 @@ function createWindow () {
 }
 
 app.whenReady().then(() => {
+  tray = new Tray('images/tray-icon.png')
+  const contextMenu = Menu.buildFromTemplate([
+    {label: "Show", type: "normal", click: () => {
+      BrowserWindow.getAllWindows().forEach((e) => e.show())
+    }},
+    {label: "Quit", type: "normal", role: "quit"}
+  ])
+  tray.setToolTip("RAINO")
+  tray.setContextMenu(contextMenu)
+  tray.on('double-click', () => {
+    BrowserWindow.getAllWindows().forEach((e) => e.show())
+  })
   createWindow()
 
   app.on('activate', () => {
@@ -26,7 +42,7 @@ app.whenReady().then(() => {
 })
 
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
+  if (!isMacOS) {
     app.quit()
   }
 })
