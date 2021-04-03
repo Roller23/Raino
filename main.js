@@ -1,4 +1,4 @@
-const { app, Menu, Tray, BrowserWindow } = require('electron')
+const { app, Menu, Tray, BrowserWindow, globalShortcut } = require('electron')
 
 const isMacOS = (process.platform === "darwin")
 let tray = null
@@ -19,6 +19,29 @@ function createWindow () {
   win.loadFile('index.html')
 }
 
+function manageShortcuts() {
+  const zoomInRegister = globalShortcut.register('CommandOrControl+=', () => {
+    let zoomLevel = BrowserWindow.getFocusedWindow().webContents.getZoomLevel()
+    if (zoomLevel < 2)
+      BrowserWindow.getFocusedWindow().webContents.setZoomLevel(zoomLevel + 0.1)
+  })
+
+  const zoomOutRegister = globalShortcut.register('CommandOrControl+-', () => {
+    let zoomLevel = BrowserWindow.getFocusedWindow().webContents.getZoomLevel()
+    if (zoomLevel > -0.5)
+      BrowserWindow.getFocusedWindow().webContents.setZoomLevel(zoomLevel - 0.1)
+  })
+
+  if (!zoomInRegister || !zoomOutRegister) {
+    console.log('registration failed')
+  }
+
+  globalShortcut.register('CommandOrControl+Shift+=',()=>{});
+  // for debuging purposes
+  // globalShortcut.register('CommandOrControl+W',()=>{}); 
+
+}
+
 app.whenReady().then(() => {
   tray = new Tray('images/tray-icon.png')
   const contextMenu = Menu.buildFromTemplate([
@@ -33,6 +56,7 @@ app.whenReady().then(() => {
     BrowserWindow.getAllWindows().forEach((e) => e.show())
   })
   createWindow()
+  manageShortcuts()
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
