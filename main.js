@@ -1,13 +1,13 @@
 const { app, BrowserWindow } = require('electron')
 const path = require('path')
 
-const isFramed = (process.platform == "darwin")
+const isMacOS = (process.platform === "darwin")
 
 function createWindow () {
   const win = new BrowserWindow({
     width: 900,
     height: 600,
-    frame: isFramed,
+    frame: isMacOS,
     titleBarStyle: 'hidden',
     webPreferences: {
       
@@ -28,7 +28,7 @@ app.whenReady().then(() => {
 })
 
 app.on('window-all-closed', () => {
-  if (!isFramed) {
+  if (!isMacOS) {
     app.quit()
   }
 })
