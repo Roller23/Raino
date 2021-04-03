@@ -1,11 +1,11 @@
-const { app, BrowserWindow, globalShortcut} = require('electron')
+const { app, BrowserWindow, globalShortcut } = require('electron')
 const path = require('path')
 
 function createWindow() {
   const win = new BrowserWindow({
     width: 900,
     height: 600,
-    frame: false,
+    // frame: false,
     titleBarStyle: 'hidden',
     webPreferences: {
 
@@ -14,37 +14,38 @@ function createWindow() {
   win.loadFile('index.html')
 }
 
-app.whenReady().then(() => {
-  createWindow()
-
-  app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow()
-    }
-  })
-  // BrowserWindow.getFocusedWindow().
-  // BrowserWindow.getFocusedWindow().webContents.unregisterAll();
-
+function manageShortcuts() {
   const zoomInRegister = globalShortcut.register('CommandOrControl+=', () => {
-    // console.log('Ctrl with + is pressed')
     let zoomLevel = BrowserWindow.getFocusedWindow().webContents.getZoomLevel();
     if (zoomLevel < 2)
-      BrowserWindow.getFocusedWindow().webContents.setZoomLevel(zoomLevel+0.1);
+      BrowserWindow.getFocusedWindow().webContents.setZoomLevel(zoomLevel + 0.1);
   })
 
   const zoomOutRegister = globalShortcut.register('CommandOrControl+-', () => {
-    // console.log('Ctrl with - is pressed')
     let zoomLevel = BrowserWindow.getFocusedWindow().webContents.getZoomLevel();
-    if (zoomLevel > 0.1)
-      BrowserWindow.getFocusedWindow().webContents.setZoomLevel(zoomLevel-0.1);
+    if (zoomLevel > -0.5)
+      BrowserWindow.getFocusedWindow().webContents.setZoomLevel(zoomLevel - 0.1);
   })
 
   if (!zoomInRegister || !zoomOutRegister) {
     console.log('registration failed')
   }
 
-  // console.log(globalShortcut.isRegistered('CommandOrControl+='))
-  // console.log(globalShortcut.isRegistered('CommandOrControl+-'))
+  globalShortcut.register('CommandOrControl+Shift+=',()=>{});
+  // globalShortcut.register('CommandOrControl+W',()=>{});
+
+}
+
+app.whenReady().then(() => {
+  createWindow()
+  manageShortcuts();
+
+  app.on('activate', () => {
+    if (BrowserWindow.getAllWindows().length === 0) {
+      createWindow()
+    }
+  })
+
 })
 
 app.on('window-all-closed', () => {
