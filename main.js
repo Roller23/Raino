@@ -21,15 +21,23 @@ function createWindow () {
 
 function manageShortcuts() {
   const zoomInRegister = globalShortcut.register('CommandOrControl+=', () => {
-    let zoomLevel = BrowserWindow.getFocusedWindow().webContents.getZoomLevel()
-    if (zoomLevel < 2)
-      BrowserWindow.getFocusedWindow().webContents.setZoomLevel(zoomLevel + 0.1)
+    let focusedWindow = BrowserWindow.getFocusedWindow()
+    if(focusedWindow)
+    {
+      let zoomLevel = focusedWindow.webContents.getZoomLevel()
+      if (zoomLevel < 2)
+        BrowserWindow.getFocusedWindow().webContents.setZoomLevel(zoomLevel + 0.1)
+    }
   })
 
   const zoomOutRegister = globalShortcut.register('CommandOrControl+-', () => {
-    let zoomLevel = BrowserWindow.getFocusedWindow().webContents.getZoomLevel()
-    if (zoomLevel > -0.5)
-      BrowserWindow.getFocusedWindow().webContents.setZoomLevel(zoomLevel - 0.1)
+    let focusedWindow = BrowserWindow.getFocusedWindow()
+    if(focusedWindow)
+    {
+      let zoomLevel = focusedWindow.webContents.getZoomLevel()
+      if (zoomLevel > -0.5)
+        BrowserWindow.getFocusedWindow().webContents.setZoomLevel(zoomLevel - 0.1)
+    }
   })
 
   if (!zoomInRegister || !zoomOutRegister) {
