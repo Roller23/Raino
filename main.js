@@ -1,5 +1,4 @@
 const { app, Menu, Tray, BrowserWindow } = require('electron')
-const path = require('path')
 
 const isMacOS = (process.platform === "darwin")
 let tray = null
