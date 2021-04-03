@@ -1,4 +1,4 @@
-const { app, Menu, Tray, BrowserWindow } = require('electron')
+const { app, Menu, Tray, BrowserWindow, globalShortcut } = require('electron')
 
 const isMacOS = (process.platform === "darwin")
 let tray = null
