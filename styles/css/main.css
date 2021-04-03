@@ -61,8 +61,11 @@ body {
 .titlebar .window-controls #minimizeBtn {
   grid-column: 1;
 }
-.titlebar .window-controls #maximizeBtn {
+.titlebar .window-controls #maximizeBtn, .titlebar .window-controls #restoreBtn {
   grid-column: 2;
+}
+.titlebar .window-controls #restoreBtn {
+  display: none;
 }
 
 .login-container {

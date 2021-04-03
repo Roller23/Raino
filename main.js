@@ -10,7 +10,9 @@ function createWindow () {
     frame: isMacOS,
     titleBarStyle: 'hidden',
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      enableRemoteModule: true,
+      contextIsolation: false
     }
   })
 

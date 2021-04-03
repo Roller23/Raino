@@ -67,8 +67,11 @@ body {
     #minimizeBtn {
       grid-column: 1;
     }
-    #maximizeBtn {
+    #maximizeBtn, #restoreBtn {
       grid-column: 2;
+    }
+    #restoreBtn {
+      display: none;
     }
   }
 }
