@@ -1,6 +1,10 @@
 "use strict";
 const remote = require('electron').remote;
 const win = remote.getCurrentWindow();
+const isMacOS = (process.platform === "darwin");
+if (!isMacOS) {
+    get('.window-controls').style.display = 'grid';
+}
 document.onreadystatechange = (event) => {
     if (document.readyState == "complete") {
         handleWindowControls();
@@ -10,16 +14,16 @@ window.onbeforeunload = () => {
     win.removeAllListeners();
 };
 function handleWindowControls() {
-    get('#minimizeBtn').on("click", event => {
+    get('#minimizeBtn').on("click", (event) => {
         win.minimize();
     });
-    get('#maximizeBtn').on("click", event => {
+    get('#maximizeBtn').on("click", (event) => {
         win.maximize();
     });
-    get('#restoreBtn').on("click", event => {
+    get('#restoreBtn').on("click", (event) => {
         win.unmaximize();
     });
-    get('#closeBtn').on("click", event => {
+    get('#closeBtn').on("click", (event) => {
         win.hide();
     });
     toggleMaxRestoreButtons();

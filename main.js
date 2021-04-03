@@ -23,6 +23,9 @@ function createWindow () {
 app.whenReady().then(() => {
   tray = new Tray('images/tray-icon.png')
   const contextMenu = Menu.buildFromTemplate([
+    {label: "Show", type: "normal", click: () => {
+      BrowserWindow.getAllWindows().forEach((e) => e.show())
+    }},
     {label: "Quit", type: "normal", role: "quit"}
   ])
   tray.setToolTip("RAINO")

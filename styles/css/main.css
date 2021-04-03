@@ -23,7 +23,7 @@ body {
   -webkit-app-region: drag;
 }
 .titlebar .window-controls {
-  display: grid;
+  display: none;
   grid-template-columns: repeat(3, 14px);
   grid-gap: 10px;
   position: absolute;
