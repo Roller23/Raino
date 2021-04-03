@@ -29,6 +29,9 @@ app.whenReady().then(() => {
   ])
   tray.setToolTip("RAINO")
   tray.setContextMenu(contextMenu)
+  tray.on('double-click', () => {
+    BrowserWindow.getAllWindows().forEach((e) => e.show())
+  })
   createWindow()
 
   app.on('activate', () => {
