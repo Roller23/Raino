@@ -8,6 +8,8 @@ body {
   font-family: Lato;
 }
 
+@import 'colors';
+
 * {
   box-sizing: border-box;
 }
@@ -177,7 +179,7 @@ body {
       display: block;
       margin-top: 20px;
       border: 0px;
-      background-color: #6FB3F8;
+      background-color: $lightBlue;
       font-family: Lato, Arial, Helvetica, sans-serif;
       padding: 10px 25px;
       color: white;
@@ -193,10 +195,10 @@ body {
       }
 
       &:hover {
-        background-color: #4C7BAB;
+        background-color: $darkBlue;
         transform: scale(1.05);
         &::after {
-          content: "To the infinity and beyond!";
+          content: "To infinity and beyond!";
         }
       }
       &:active {

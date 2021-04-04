@@ -188,7 +188,7 @@ body {
   transform: scale(1.05);
 }
 .login-container .right .login:hover::after {
-  content: "To the infinity and beyond!";
+  content: "To infinity and beyond!";
 }
 .login-container .right .login:active {
   transition: 0.1s;
