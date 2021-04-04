@@ -176,6 +176,7 @@ body {
       }
     }
     .login {
+      position: relative;
       display: block;
       margin-top: 20px;
       border: 0px;
@@ -189,21 +190,38 @@ body {
       outline: none;
       box-shadow: 1px 1px 7px 1px #252525;
       transition: transform 0.3s;
+      overflow: hidden;
 
       &::after {
         content: "Continue";
       }
 
       &:hover {
-        background-color: $darkBlue;
+        // background-color: $darkBlue;
         transform: scale(1.05);
         &::after {
+          position: relative;
+          z-index: 50;
           content: "To infinity and beyond!";
+        }
+        .background {
+          width: calc(100% + 20px);
         }
       }
       &:active {
         transition: 0.1s;
         transform: scale(1);
+      }
+
+      .background {
+        position: absolute;
+        left: -10px;
+        top: 0px;
+        width: 0%;
+        height: 100%;
+        background-color: $darkBlue;
+        transition: 0.3s;
+        transform: skew(-15deg);
       }
     }
   }
