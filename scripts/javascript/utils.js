@@ -1,16 +1,15 @@
 "use strict";
 /**
  * Global utility functions
- * Mainly for DOM stuff
  */
-const get = (selector) => {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.authSocket = exports.validEmail = exports.parseJson = exports.request = exports.get = void 0;
+const global_1 = require("./global");
+function get(selector) {
     return document.querySelector(selector);
-};
-HTMLElement.prototype.on = function (event, callback) {
-    this.addEventListener(event, callback);
-    return this;
-};
-const request = async (method, url, data) => {
+}
+exports.get = get;
+async function request(method, url, data) {
     const options = {
         headers: {
             'Content-Type': 'application/json'
@@ -19,8 +18,9 @@ const request = async (method, url, data) => {
         body: JSON.stringify(data)
     };
     return (await fetch(url, options)).text();
-};
-const parseJson = (json) => {
+}
+exports.request = request;
+function parseJson(json) {
     try {
         return JSON.parse(json);
     }
@@ -28,11 +28,19 @@ const parseJson = (json) => {
         console.log('Could not parse json:', json);
         return null;
     }
-};
-const validEmail = (value) => {
+}
+exports.parseJson = parseJson;
+function validEmail(value) {
     const input = document.createElement('input');
     input.type = 'email';
     input.required = true;
     input.value = value;
     return input.checkValidity();
-};
+}
+exports.validEmail = validEmail;
+function authSocket() {
+    if (!global_1.Global.token || !global_1.Global.socket)
+        return;
+    global_1.Global.socket.emit('authenticate', global_1.Global.token);
+}
+exports.authSocket = authSocket;

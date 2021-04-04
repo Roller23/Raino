@@ -1,22 +1,14 @@
 /**
  * Global utility functions
- * Mainly for DOM stuff
  */
 
-const get = (selector: string): HTMLElement | null => {
+import { Global } from "./global";
+
+export function get(selector: string): HTMLElement | null {
   return document.querySelector(selector);
 }
 
-interface HTMLElement {
-  on(event: string, callback: EventListenerOrEventListenerObject): HTMLElement;
-}
-
-HTMLElement.prototype.on = function(this: HTMLElement, event: string, callback: EventListenerOrEventListenerObject): HTMLElement {
-  this.addEventListener(event, callback);
-  return this;
-}
-
-const request = async (method: string, url: string, data: Object): Promise<string> => {
+export async function request(method: string, url: string, data: Object): Promise<string> {
   const options = {
     headers: {
       'Content-Type': 'application/json'
@@ -27,7 +19,7 @@ const request = async (method: string, url: string, data: Object): Promise<strin
   return (await fetch(url, options)).text();
 }
 
-const parseJson = (json: string): any => {
+export function parseJson(json: string): any {
   try {
     return JSON.parse(json);
   } catch (e) {
@@ -36,10 +28,15 @@ const parseJson = (json: string): any => {
   }
 }
 
-const validEmail = (value: string): boolean => {
+export function validEmail(value: string): boolean {
   const input = document.createElement('input');
   input.type = 'email';
   input.required = true;
   input.value = value;
   return input.checkValidity();
+}
+
+export function authSocket(): void {
+  if (!Global.token || !Global.socket) return;
+  Global.socket.emit('authenticate', Global.token);
 }

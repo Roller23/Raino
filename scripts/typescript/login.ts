@@ -1,3 +1,7 @@
+import io from 'socket.io-client';
+import { Global } from './global';
+import { authSocket, get, parseJson, request } from './utils'
+
 (async () => {
   
   let loggingIn: boolean = true;
@@ -55,14 +59,25 @@
       // TODO: convert msg to something more friendly
       return alert(res.msg);
     }
+    Global.token = res.token;
+    if (Global.socket && Global.socket.connected) {
+      return authSocket();
+    }
+    Global.socket = io('https://raino-backend.glitch.me');
+    Global.socket.on('connected', () => {
+      authSocket();
+    });
+    Global.socket.on('authenticated', () => {
+      console.log('yay auth successful')
+    });
     alert('Success!\n...\nwhat now');
   }
 
-  get('#signup-btn')!.on('click', function(this: HTMLElement, e: Event): void {
+  get('#signup-btn')!.addEventListener('click', function(this: HTMLElement, e: Event): void {
     toggleForm(this);
   });
 
-  get('#send-login-form')!.on('click', (e: Event) => {
+  get('#send-login-form')!.addEventListener('click', (e: Event) => {
     if (!loggingIn) {
       return register();
     }

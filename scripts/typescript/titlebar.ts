@@ -1,3 +1,5 @@
+import { get } from "./utils";
+
 const remote = require('electron').remote;
 
 const win = remote.getCurrentWindow();
@@ -18,19 +20,19 @@ window.onbeforeunload = () => {
 }
 
 function handleWindowControls() {
-    get('#minimizeBtn')!.on("click", (event: Event) => {
+    get('#minimizeBtn')!.addEventListener("click", (event: Event) => {
         win.minimize();
     });
 
-    get('#maximizeBtn')!.on("click", (event: Event) => {
+    get('#maximizeBtn')!.addEventListener("click", (event: Event) => {
         win.maximize();
     });
 
-    get('#restoreBtn')!.on("click", (event: Event) => {
+    get('#restoreBtn')!.addEventListener("click", (event: Event) => {
         win.unmaximize();
     });
 
-    get('#closeBtn')!.on("click", (event: Event) => {
+    get('#closeBtn')!.addEventListener("click", (event: Event) => {
         win.hide();
     });
 
