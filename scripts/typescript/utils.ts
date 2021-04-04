@@ -15,3 +15,31 @@ HTMLElement.prototype.on = function(this: HTMLElement, event: string, callback: 
   this.addEventListener(event, callback);
   return this;
 }
+
+const request = async (method: string, url: string, data: Object): Promise<string> => {
+  const options = {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: method,
+    body: JSON.stringify(data)
+  };
+  return (await fetch(url, options)).text();
+}
+
+const parseJson = (json: string): any => {
+  try {
+    return JSON.parse(json);
+  } catch (e) {
+    console.log('Could not parse json:', json);
+    return null;
+  }
+}
+
+const validEmail = (value: string): boolean => {
+  const input = document.createElement('input');
+  input.type = 'email';
+  input.required = true;
+  input.value = value;
+  return input.checkValidity();
+}
