@@ -166,17 +166,49 @@ body {
   cursor: pointer;
 }
 .login-container .right .login {
+  position: relative;
   display: block;
   margin-top: 20px;
   border: 0px;
-  background-color: #a31c1c;
-  padding: 10px 100px;
+  background-color: #6FB3F8;
+  font-family: Lato, Arial, Helvetica, sans-serif;
+  padding: 10px 25px;
   color: white;
   font-weight: bold;
   border-radius: 20px;
   cursor: pointer;
   outline: none;
   box-shadow: 1px 1px 7px 1px #252525;
+  transition: transform 0.3s;
+  overflow: hidden;
+}
+.login-container .right .login::after {
+  content: "Continue";
+}
+.login-container .right .login:hover {
+  transform: scale(1.05);
+}
+.login-container .right .login:hover::after {
+  position: relative;
+  z-index: 50;
+  content: "To infinity and beyond!";
+}
+.login-container .right .login:hover .background {
+  width: calc(100% + 20px);
+}
+.login-container .right .login:active {
+  transition: 0.1s;
+  transform: scale(1);
+}
+.login-container .right .login .background {
+  position: absolute;
+  left: -10px;
+  top: 0px;
+  width: 0%;
+  height: 100%;
+  background-color: #4C7BAB;
+  transition: 0.3s;
+  transform: skew(-15deg);
 }
 
 /*# sourceMappingURL=main.css.map */

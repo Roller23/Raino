@@ -8,6 +8,8 @@ body {
   font-family: Lato;
 }
 
+@import 'colors';
+
 * {
   box-sizing: border-box;
 }
@@ -174,17 +176,53 @@ body {
       }
     }
     .login {
+      position: relative;
       display: block;
       margin-top: 20px;
       border: 0px;
-      background-color: rgb(163, 28, 28);
-      padding: 10px 100px;
+      background-color: $lightBlue;
+      font-family: Lato, Arial, Helvetica, sans-serif;
+      padding: 10px 25px;
       color: white;
       font-weight: bold;
       border-radius: 20px;
       cursor: pointer;
       outline: none;
       box-shadow: 1px 1px 7px 1px #252525;
+      transition: transform 0.3s;
+      overflow: hidden;
+
+      &::after {
+        content: "Continue";
+      }
+
+      &:hover {
+        // background-color: $darkBlue;
+        transform: scale(1.05);
+        &::after {
+          position: relative;
+          z-index: 50;
+          content: "To infinity and beyond!";
+        }
+        .background {
+          width: calc(100% + 20px);
+        }
+      }
+      &:active {
+        transition: 0.1s;
+        transform: scale(1);
+      }
+
+      .background {
+        position: absolute;
+        left: -10px;
+        top: 0px;
+        width: 0%;
+        height: 100%;
+        background-color: $darkBlue;
+        transition: 0.3s;
+        transform: skew(-15deg);
+      }
     }
   }
 }
