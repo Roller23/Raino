@@ -1,8 +1,10 @@
 import io from 'socket.io-client';
 import { Global } from './global';
-import { authSocket, get, parseJson, request } from './utils'
+import { authSocket, get, parseJson, request, validEmail } from './utils'
 
 (async () => {
+
+  const getI = (s: string) => <HTMLInputElement>get(s);
   
   let loggingIn: boolean = true;
 
@@ -25,10 +27,21 @@ import { authSocket, get, parseJson, request } from './utils'
   }
 
   async function register() {
-    const $ = (s: string) => <HTMLInputElement>get(s); // might make it global later
-    const email: string = $('#form-email').value;
-    const password: string = $('#form-password').value;
-    const nickname: string = $('#form-nickname').value;
+    const email: string = getI('#form-email').value.trim();
+    const password: string = getI('#form-password').value;
+    const nickname: string = getI('#form-nickname').value.trim();
+    if (!validEmail(email)) {
+      return alert('Invalid email address');
+    }
+    if (password.length < 3 || password.length > 100) {
+      return alert('Password too long or short');
+    }
+    if (!nickname) {
+      return alert('Nickname cannot be empty');
+    }
+    if (nickname.length > 20) {
+      return alert('Nickname can be maximum 20 characters');
+    }
     const data = {email, password, nickname};
     const url = 'https://raino-backend.glitch.me/register/';
     const json = await request('POST', url, data);
@@ -45,9 +58,14 @@ import { authSocket, get, parseJson, request } from './utils'
   }
 
   async function login() {
-    const $ = (s: string) => <HTMLInputElement>get(s);
-    const email: string = $('#form-email').value;
-    const password: string = $('#form-password').value;
+    const email: string = getI('#form-email').value.trim();
+    const password: string = getI('#form-password').value;
+    if (!validEmail(email)) {
+      return alert('Invalid email address');
+    }
+    if (password.length < 3 || password.length > 100) {
+      return alert('Password too long or short');
+    }
     const data = {email, password};
     const url = 'https://raino-backend.glitch.me/login/';
     const json = await request('POST', url, data);
@@ -63,12 +81,20 @@ import { authSocket, get, parseJson, request } from './utils'
     if (Global.socket && Global.socket.connected) {
       return authSocket();
     }
+    if (Global.socket) {
+      Global.socket.disconnect();
+    }
     Global.socket = io('https://raino-backend.glitch.me');
     Global.socket.on('connected', () => {
       authSocket();
     });
     Global.socket.on('authenticated', () => {
       console.log('yay auth successful')
+      // TODO: close the login page and display chat
+    });
+    Global.socket.on('auth denied', () => {
+      // TODO: get a new token
+      console.log('auth denied');
     });
     alert('Success!\n...\nwhat now');
   }

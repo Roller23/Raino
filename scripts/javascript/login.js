@@ -7,6 +7,7 @@ const socket_io_client_1 = __importDefault(require("socket.io-client"));
 const global_1 = require("./global");
 const utils_1 = require("./utils");
 (async () => {
+    const getI = (s) => utils_1.get(s);
     let loggingIn = true;
     function toggleForm(self) {
         const wrapper = utils_1.get('.form-nickname-wrapper');
@@ -26,10 +27,21 @@ const utils_1 = require("./utils");
         self.innerText = 'sign up';
     }
     async function register() {
-        const $ = (s) => utils_1.get(s); // might make it global later
-        const email = $('#form-email').value;
-        const password = $('#form-password').value;
-        const nickname = $('#form-nickname').value;
+        const email = getI('#form-email').value.trim();
+        const password = getI('#form-password').value;
+        const nickname = getI('#form-nickname').value.trim();
+        if (!utils_1.validEmail(email)) {
+            return alert('Invalid email address');
+        }
+        if (password.length < 3 || password.length > 100) {
+            return alert('Password too long or short');
+        }
+        if (!nickname) {
+            return alert('Nickname cannot be empty');
+        }
+        if (nickname.length > 20) {
+            return alert('Nickname can be maximum 20 characters');
+        }
         const data = { email, password, nickname };
         const url = 'https://raino-backend.glitch.me/register/';
         const json = await utils_1.request('POST', url, data);
@@ -45,9 +57,14 @@ const utils_1 = require("./utils");
         toggleForm(utils_1.get('#signup-btn'));
     }
     async function login() {
-        const $ = (s) => utils_1.get(s);
-        const email = $('#form-email').value;
-        const password = $('#form-password').value;
+        const email = getI('#form-email').value.trim();
+        const password = getI('#form-password').value;
+        if (!utils_1.validEmail(email)) {
+            return alert('Invalid email address');
+        }
+        if (password.length < 3 || password.length > 100) {
+            return alert('Password too long or short');
+        }
         const data = { email, password };
         const url = 'https://raino-backend.glitch.me/login/';
         const json = await utils_1.request('POST', url, data);
@@ -63,12 +80,20 @@ const utils_1 = require("./utils");
         if (global_1.Global.socket && global_1.Global.socket.connected) {
             return utils_1.authSocket();
         }
+        if (global_1.Global.socket) {
+            global_1.Global.socket.disconnect();
+        }
         global_1.Global.socket = socket_io_client_1.default('https://raino-backend.glitch.me');
         global_1.Global.socket.on('connected', () => {
             utils_1.authSocket();
         });
         global_1.Global.socket.on('authenticated', () => {
             console.log('yay auth successful');
+            // TODO: close the login page and display chat
+        });
+        global_1.Global.socket.on('auth denied', () => {
+            // TODO: get a new token
+            console.log('auth denied');
         });
         alert('Success!\n...\nwhat now');
     }
