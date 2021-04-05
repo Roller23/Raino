@@ -41,6 +41,10 @@ exports.validEmail = validEmail;
 function authSocket() {
     if (!global_1.Global.token || !global_1.Global.socket)
         return;
-    global_1.Global.socket.emit('authenticate', global_1.Global.token);
+    console.log(global_1.Global.tokenSelector);
+    global_1.Global.socket.emit('authenticate', {
+        selector: global_1.Global.tokenSelector,
+        token: global_1.Global.token
+    });
 }
 exports.authSocket = authSocket;

@@ -78,6 +78,7 @@ import { authSocket, get, parseJson, request, validEmail } from './utils'
       return alert(res.msg);
     }
     Global.token = res.token;
+    Global.tokenSelector = res.selector;
     if (Global.socket && Global.socket.connected) {
       return authSocket();
     }

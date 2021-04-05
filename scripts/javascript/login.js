@@ -77,6 +77,7 @@ const utils_1 = require("./utils");
             return alert(res.msg);
         }
         global_1.Global.token = res.token;
+        global_1.Global.tokenSelector = res.selector;
         if (global_1.Global.socket && global_1.Global.socket.connected) {
             return utils_1.authSocket();
         }

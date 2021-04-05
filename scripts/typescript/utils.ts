@@ -38,5 +38,9 @@ export function validEmail(value: string): boolean {
 
 export function authSocket(): void {
   if (!Global.token || !Global.socket) return;
-  Global.socket.emit('authenticate', Global.token);
+  console.log(Global.tokenSelector)
+  Global.socket.emit('authenticate', {
+    selector: Global.tokenSelector,
+    token: Global.token
+  });
 }
