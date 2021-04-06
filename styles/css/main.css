@@ -185,6 +185,15 @@ body {
 .login-container .right .login::after {
   content: "Continue";
 }
+.login-container .right .login.signing::after {
+  content: "Signing in..." !important;
+}
+.login-container .right .login.authorizing::after {
+  content: "Authorizing..." !important;
+}
+.login-container .right .login.success::after {
+  content: "Success!" !important;
+}
 .login-container .right .login:hover {
   transform: scale(1.05);
 }

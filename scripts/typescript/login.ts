@@ -68,12 +68,16 @@ import { authSocket, get, parseJson, request, validEmail } from './utils'
     }
     const data = {email, password};
     const url = 'https://raino-backend.glitch.me/login/';
+    get('#send-login-form')!.classList.add('signing');
     const json = await request('POST', url, data);
     const res = parseJson(json);
     if (res === null) {
+      get('#send-login-form')!.classList.remove('signing');
       return alert('Server error!');
     }
+    get('#send-login-form')!.classList.add('authorizing');
     if (!res.success) {
+      get('#send-login-form')!.classList.remove('signing', 'authorizing');
       // TODO: convert msg to something more friendly
       return alert(res.msg);
     }
@@ -90,14 +94,15 @@ import { authSocket, get, parseJson, request, validEmail } from './utils'
       authSocket();
     });
     Global.socket.on('authenticated', () => {
-      console.log('yay auth successful')
+      get('#send-login-form')!.classList.remove('signing', 'authorizing');
+      get('#send-login-form')!.classList.add('success');
       // TODO: close the login page and display chat
     });
     Global.socket.on('auth denied', () => {
       // TODO: get a new token
-      console.log('auth denied');
+      get('#send-login-form')!.classList.remove('signing', 'authorizing');
+      alert('Could not sign in! Try again');
     });
-    alert('Success!\n...\nwhat now');
   }
 
   get('#signup-btn')!.addEventListener('click', function(this: HTMLElement, e: Event): void {

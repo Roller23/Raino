@@ -67,12 +67,16 @@ const utils_1 = require("./utils");
         }
         const data = { email, password };
         const url = 'https://raino-backend.glitch.me/login/';
+        utils_1.get('#send-login-form').classList.add('signing');
         const json = await utils_1.request('POST', url, data);
         const res = utils_1.parseJson(json);
         if (res === null) {
+            utils_1.get('#send-login-form').classList.remove('signing');
             return alert('Server error!');
         }
+        utils_1.get('#send-login-form').classList.add('authorizing');
         if (!res.success) {
+            utils_1.get('#send-login-form').classList.remove('signing', 'authorizing');
             // TODO: convert msg to something more friendly
             return alert(res.msg);
         }
@@ -89,14 +93,15 @@ const utils_1 = require("./utils");
             utils_1.authSocket();
         });
         global_1.Global.socket.on('authenticated', () => {
-            console.log('yay auth successful');
+            utils_1.get('#send-login-form').classList.remove('signing', 'authorizing');
+            utils_1.get('#send-login-form').classList.add('success');
             // TODO: close the login page and display chat
         });
         global_1.Global.socket.on('auth denied', () => {
             // TODO: get a new token
-            console.log('auth denied');
+            utils_1.get('#send-login-form').classList.remove('signing', 'authorizing');
+            alert('Could not sign in! Try again');
         });
-        alert('Success!\n...\nwhat now');
     }
     utils_1.get('#signup-btn').addEventListener('click', function (e) {
         toggleForm(this);

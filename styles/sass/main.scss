@@ -196,8 +196,19 @@ body {
         content: "Continue";
       }
 
+      &.signing::after {
+        content: "Signing in..." !important;
+      }
+
+      &.authorizing::after {
+        content: "Authorizing..." !important;
+      }
+
+      &.success::after {
+        content: "Success!" !important;
+      }
+
       &:hover {
-        // background-color: $darkBlue;
         transform: scale(1.05);
         &::after {
           position: relative;
