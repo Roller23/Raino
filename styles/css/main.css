@@ -1,11 +1,11 @@
 body {
   margin: 0px;
   font-family: Arial, Helvetica, sans-serif;
-  font-family: Lato;
+  font-family: "Inter", sans-serif;
 }
 
 ::placeholder {
-  font-family: Lato;
+  font-family: "Inter", sans-serif;
 }
 
 * {
@@ -171,7 +171,7 @@ body {
   margin-top: 20px;
   border: 0px;
   background-color: #6FB3F8;
-  font-family: Lato, Arial, Helvetica, sans-serif;
+  font-family: "Inter", sans-serif;
   padding: 10px 25px;
   color: white;
   font-weight: bold;
