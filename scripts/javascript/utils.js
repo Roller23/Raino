@@ -3,7 +3,7 @@
  * Global utility functions
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sleep = exports.authSocket = exports.validEmail = exports.parseJson = exports.request = exports.get = void 0;
+exports.fadeOut = exports.sleep = exports.authSocket = exports.validEmail = exports.parseJson = exports.request = exports.get = void 0;
 const global_1 = require("./global");
 function get(selector) {
     return document.querySelector(selector);
@@ -52,3 +52,10 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(() => resolve, ms));
 }
 exports.sleep = sleep;
+function fadeOut(el, ms) {
+    return new Promise(resolve => {
+        el.style.opacity = '0';
+        sleep(ms).then(resolve);
+    });
+}
+exports.fadeOut = fadeOut;

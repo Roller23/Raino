@@ -1,6 +1,6 @@
 import io from 'socket.io-client';
 import { Global } from './global';
-import { authSocket, get, parseJson, request, validEmail } from './utils'
+import { authSocket, fadeOut, get, parseJson, request, validEmail } from './utils'
 
 (async () => {
 
@@ -93,10 +93,10 @@ import { authSocket, get, parseJson, request, validEmail } from './utils'
     Global.socket.on('connected', () => {
       authSocket();
     });
-    Global.socket.on('authenticated', () => {
+    Global.socket.on('authenticated', async () => {
       get('#send-login-form')!.classList.remove('signing', 'authorizing');
       get('#send-login-form')!.classList.add('success');
-      // TODO: close the login page and display chat
+      await fadeOut(get('.login-container')!, 400);
     });
     Global.socket.on('auth denied', () => {
       // TODO: get a new token

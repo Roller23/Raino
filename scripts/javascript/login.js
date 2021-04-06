@@ -92,10 +92,10 @@ const utils_1 = require("./utils");
         global_1.Global.socket.on('connected', () => {
             utils_1.authSocket();
         });
-        global_1.Global.socket.on('authenticated', () => {
+        global_1.Global.socket.on('authenticated', async () => {
             utils_1.get('#send-login-form').classList.remove('signing', 'authorizing');
             utils_1.get('#send-login-form').classList.add('success');
-            // TODO: close the login page and display chat
+            await utils_1.fadeOut(utils_1.get('.login-container'), 400);
         });
         global_1.Global.socket.on('auth denied', () => {
             // TODO: get a new token

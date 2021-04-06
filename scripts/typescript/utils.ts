@@ -48,3 +48,10 @@ export function authSocket(): void {
 export function sleep(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(() => resolve, ms));
 }
+
+export function fadeOut(el: HTMLElement, ms: number): Promise<void> {
+  return new Promise(resolve => {
+    el.style.opacity = '0';
+    sleep(ms).then(resolve);
+  });
+}
