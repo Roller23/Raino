@@ -3,13 +3,17 @@
  * Global utility functions
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.fadeOut = exports.sleep = exports.authSocket = exports.validEmail = exports.parseJson = exports.request = exports.get = void 0;
+exports.fadeOut = exports.sleep = exports.authSocket = exports.validEmail = exports.parseJson = exports.request = exports.getAll = exports.get = void 0;
 const global_1 = require("./global");
 function get(selector) {
     return document.querySelector(selector);
 }
 exports.get = get;
-async function request(method, url, data) {
+function getAll(selector) {
+    return document.querySelectorAll(selector);
+}
+exports.getAll = getAll;
+async function request(method, url, data = {}) {
     const options = {
         headers: {
             'Content-Type': 'application/json'
@@ -49,13 +53,16 @@ function authSocket() {
 }
 exports.authSocket = authSocket;
 function sleep(ms) {
-    return new Promise(resolve => setTimeout(() => resolve, ms));
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 exports.sleep = sleep;
 function fadeOut(el, ms) {
     return new Promise(resolve => {
         el.style.opacity = '0';
-        sleep(ms).then(resolve);
+        sleep(ms).then(() => {
+            el.style.display = 'none';
+            resolve();
+        });
     });
 }
 exports.fadeOut = fadeOut;

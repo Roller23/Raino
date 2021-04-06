@@ -40,16 +40,22 @@
           <div class="up">up</div>
         </div>
       </div>
-      <input type="email" placeholder="E-Mail" id="form-email">
-      <input type="password" placeholder="Password" id="form-password">
-      <div class="form-nickname-wrapper">
-        <input type="text" placeholder="Nickname" id="form-nickname">
+      <div class="input-wrapper">
+        <input type="email" placeholder="E-Mail" id="form-email">
+        <input type="password" placeholder="Password" id="form-password">
+        <div class="form-nickname-wrapper">
+          <input type="text" placeholder="Nickname" id="form-nickname">
+        </div>
+        <div class="small">or <span class="sign" id="signup-btn">sign up</span></div>
       </div>
-      <div class="small">or <span class="sign" id="signup-btn">sign up</span></div>
       <button type="button" class="login" id="send-login-form">
         <div class="background"></div>
       </button>
     </div>
+  </div>
+  <div class="main-screen-container">
+    <h1 style="color: white;">Howdy</h1>
+    <button type="button" id="logout">Log out</button>
   </div>
   <script>
     require('./scripts/javascript/utils.js');

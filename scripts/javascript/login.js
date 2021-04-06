@@ -9,6 +9,25 @@ const utils_1 = require("./utils");
 (async () => {
     const getI = (s) => utils_1.get(s);
     let loggingIn = true;
+    let authInProgress = false;
+    showInputs();
+    if (localStorage.token && localStorage.tokenSelector) {
+        hideInputs();
+        console.log('signing in with token');
+        global_1.Global.token = localStorage.token;
+        global_1.Global.tokenSelector = localStorage.tokenSelector;
+        utils_1.get('#send-login-form').classList.add('authorizing');
+        initSocketAuth();
+    }
+    function showInputs() {
+        authInProgress = false;
+        const wrap = utils_1.get('.input-wrapper');
+        wrap.style.height = `${wrap.scrollHeight}px`;
+    }
+    function hideInputs() {
+        authInProgress = true;
+        utils_1.get('.input-wrapper').style.height = '0px';
+    }
     function toggleForm(self) {
         const wrapper = utils_1.get('.form-nickname-wrapper');
         const swapIn = utils_1.get('.swap-wrap .in');
@@ -26,7 +45,27 @@ const utils_1 = require("./utils");
         swapUp.style.opacity = '0';
         self.innerText = 'sign up';
     }
+    function initSocketAuth() {
+        hideInputs();
+        global_1.Global.socket = socket_io_client_1.default('https://raino-backend.glitch.me');
+        global_1.Global.socket.on('connected', () => {
+            utils_1.authSocket();
+        });
+        global_1.Global.socket.on('authenticated', async () => {
+            utils_1.get('#send-login-form').classList.remove('signing', 'authorizing');
+            utils_1.get('#send-login-form').classList.add('success');
+            await utils_1.fadeOut(utils_1.get('.login-container'), 400);
+        });
+        global_1.Global.socket.on('auth denied', () => {
+            // TODO: get a new token
+            showInputs();
+            utils_1.get('#send-login-form').classList.remove('signing', 'authorizing');
+            alert('Could not sign in! Try again');
+        });
+    }
     async function register() {
+        if (authInProgress)
+            return;
         const email = getI('#form-email').value.trim();
         const password = getI('#form-password').value;
         const nickname = getI('#form-nickname').value.trim();
@@ -57,6 +96,8 @@ const utils_1 = require("./utils");
         toggleForm(utils_1.get('#signup-btn'));
     }
     async function login() {
+        if (authInProgress)
+            return;
         const email = getI('#form-email').value.trim();
         const password = getI('#form-password').value;
         if (!utils_1.validEmail(email)) {
@@ -68,18 +109,22 @@ const utils_1 = require("./utils");
         const data = { email, password };
         const url = 'https://raino-backend.glitch.me/login/';
         utils_1.get('#send-login-form').classList.add('signing');
+        hideInputs();
         const json = await utils_1.request('POST', url, data);
         const res = utils_1.parseJson(json);
         if (res === null) {
+            showInputs();
             utils_1.get('#send-login-form').classList.remove('signing');
             return alert('Server error!');
         }
-        utils_1.get('#send-login-form').classList.add('authorizing');
         if (!res.success) {
-            utils_1.get('#send-login-form').classList.remove('signing', 'authorizing');
+            showInputs();
             // TODO: convert msg to something more friendly
             return alert(res.msg);
         }
+        utils_1.get('#send-login-form').classList.add('authorizing');
+        localStorage.token = res.token;
+        localStorage.tokenSelector = res.selector;
         global_1.Global.token = res.token;
         global_1.Global.tokenSelector = res.selector;
         if (global_1.Global.socket && global_1.Global.socket.connected) {
@@ -88,20 +133,7 @@ const utils_1 = require("./utils");
         if (global_1.Global.socket) {
             global_1.Global.socket.disconnect();
         }
-        global_1.Global.socket = socket_io_client_1.default('https://raino-backend.glitch.me');
-        global_1.Global.socket.on('connected', () => {
-            utils_1.authSocket();
-        });
-        global_1.Global.socket.on('authenticated', async () => {
-            utils_1.get('#send-login-form').classList.remove('signing', 'authorizing');
-            utils_1.get('#send-login-form').classList.add('success');
-            await utils_1.fadeOut(utils_1.get('.login-container'), 400);
-        });
-        global_1.Global.socket.on('auth denied', () => {
-            // TODO: get a new token
-            utils_1.get('#send-login-form').classList.remove('signing', 'authorizing');
-            alert('Could not sign in! Try again');
-        });
+        initSocketAuth();
     }
     utils_1.get('#signup-btn').addEventListener('click', function (e) {
         toggleForm(this);
@@ -111,5 +143,20 @@ const utils_1 = require("./utils");
             return register();
         }
         login();
+    });
+    utils_1.getAll('#form-email, #form-password').forEach(input => {
+        input.addEventListener('keyup', e => {
+            if (e.code !== 'Enter')
+                return;
+            login();
+        });
+    });
+    utils_1.get('#logout').addEventListener('click', async (e) => {
+        global_1.Global.token = null;
+        global_1.Global.tokenSelector = null;
+        localStorage.removeItem('token');
+        localStorage.removeItem('tokenSelector');
+        // await request('POST', 'https://raino-backend.glitch.me/logout/');
+        window.location.reload();
     });
 })();

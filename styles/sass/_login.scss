@@ -65,6 +65,10 @@
         }
       }
     }
+    .input-wrapper {
+      overflow: hidden;
+      transition: 0.3s;
+    }
     input {
       width: 100%;
       padding: 8px 10px;

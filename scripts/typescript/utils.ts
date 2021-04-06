@@ -8,7 +8,11 @@ export function get(selector: string): HTMLElement | null {
   return document.querySelector(selector);
 }
 
-export async function request(method: string, url: string, data: Object): Promise<string> {
+export function getAll(selector: string): NodeListOf<HTMLElement> {
+  return document.querySelectorAll(selector);
+}
+
+export async function request(method: string, url: string, data: Object = {}): Promise<string> {
   const options = {
     headers: {
       'Content-Type': 'application/json'
@@ -46,12 +50,15 @@ export function authSocket(): void {
 }
 
 export function sleep(ms: number): Promise<void> {
-  return new Promise(resolve => setTimeout(() => resolve, ms));
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 export function fadeOut(el: HTMLElement, ms: number): Promise<void> {
   return new Promise(resolve => {
     el.style.opacity = '0';
-    sleep(ms).then(resolve);
+    sleep(ms).then(() => {
+      el.style.display = 'none';
+      resolve();
+    });
   });
 }

@@ -121,6 +121,10 @@
   height: 0%;
   opacity: 0;
 }
+.login-container .right .input-wrapper {
+  overflow: hidden;
+  transition: 0.3s;
+}
 .login-container .right input {
   width: 100%;
   padding: 8px 10px;
