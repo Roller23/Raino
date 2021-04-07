@@ -68,3 +68,18 @@ export function fadeOut(el: HTMLElement, ms: number): Promise<void> {
     el.style.opacity = '0';
   });
 }
+
+type AttrsObject = {
+  [key: string]: string
+};
+
+export function create(tag: string, attrs: AttrsObject = {}, text: string = ''): HTMLElement {
+  const res = document.createElement(tag);
+  Object.keys(attrs).forEach(key => {
+    res.setAttribute(key, attrs[key]);
+  });
+  if (text) {
+    res.innerText = text;
+  }
+  return res;
+}

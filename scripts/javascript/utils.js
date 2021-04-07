@@ -3,7 +3,7 @@
  * Global utility functions
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.fadeOut = exports.sleep = exports.authSocket = exports.validEmail = exports.parseJson = exports.request = exports.getAll = exports.get = void 0;
+exports.create = exports.fadeOut = exports.sleep = exports.authSocket = exports.validEmail = exports.parseJson = exports.request = exports.getAll = exports.get = void 0;
 const global_1 = require("./global");
 function get(selector) {
     return document.querySelector(selector);
@@ -72,3 +72,14 @@ function fadeOut(el, ms) {
     });
 }
 exports.fadeOut = fadeOut;
+function create(tag, attrs = {}, text = '') {
+    const res = document.createElement(tag);
+    Object.keys(attrs).forEach(key => {
+        res.setAttribute(key, attrs[key]);
+    });
+    if (text) {
+        res.innerText = text;
+    }
+    return res;
+}
+exports.create = create;

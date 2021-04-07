@@ -1,4 +1,5 @@
 import io from 'socket.io-client';
+import { registerChatEvents } from './chat';
 import { Global } from './global';
 import { authSocket, fadeOut, get, getAll, parseJson, request, validEmail } from './utils'
 
@@ -25,13 +26,13 @@ import { authSocket, fadeOut, get, getAll, parseJson, request, validEmail } from
 
   function showInputs() {
     authInProgress = false;
-    const wrap = get('.input-wrapper')!;
+    const wrap = get('.login-container .input-wrapper')!;
     wrap.style.height = `${wrap.scrollHeight}px`;
   }
 
   function hideInputs() {
     authInProgress = true;
-    get('.input-wrapper')!.style.height = '0px';
+    get('.login-container .input-wrapper')!.style.height = '0px';
   }
 
   function toggleForm(self: HTMLElement): void {
@@ -59,10 +60,11 @@ import { authSocket, fadeOut, get, getAll, parseJson, request, validEmail } from
       authSocket();
     });
     Global.socket.on('authenticated', async () => {
+      registerChatEvents();
       get('#send-login-form')!.classList.remove('signing', 'authorizing');
       get('#send-login-form')!.classList.add('success');
       await fadeOut(get('.login-container')!, 400);
-      win.setFullScreen(true);
+      // win.setFullScreen(true); TODO
     });
     Global.socket.on('auth denied', () => {
       // TODO: get a new token
@@ -99,7 +101,7 @@ import { authSocket, fadeOut, get, getAll, parseJson, request, validEmail } from
     const url = 'https://raino-backend.glitch.me/register/';
     const json = await request('POST', url, data);
     const res = parseJson(json);
-    if (typeof res !== 'object') {
+    if (res === null) {
       return alert('Server error!');
     }
     if (!res.success) {

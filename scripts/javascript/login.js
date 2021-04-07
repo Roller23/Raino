@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const socket_io_client_1 = __importDefault(require("socket.io-client"));
+const chat_1 = require("./chat");
 const global_1 = require("./global");
 const utils_1 = require("./utils");
 (async () => {
@@ -23,12 +24,12 @@ const utils_1 = require("./utils");
     }
     function showInputs() {
         authInProgress = false;
-        const wrap = utils_1.get('.input-wrapper');
+        const wrap = utils_1.get('.login-container .input-wrapper');
         wrap.style.height = `${wrap.scrollHeight}px`;
     }
     function hideInputs() {
         authInProgress = true;
-        utils_1.get('.input-wrapper').style.height = '0px';
+        utils_1.get('.login-container .input-wrapper').style.height = '0px';
     }
     function toggleForm(self) {
         const wrapper = utils_1.get('.form-nickname-wrapper');
@@ -54,10 +55,11 @@ const utils_1 = require("./utils");
             utils_1.authSocket();
         });
         global_1.Global.socket.on('authenticated', async () => {
+            chat_1.registerChatEvents();
             utils_1.get('#send-login-form').classList.remove('signing', 'authorizing');
             utils_1.get('#send-login-form').classList.add('success');
             await utils_1.fadeOut(utils_1.get('.login-container'), 400);
-            win.setFullScreen(true);
+            // win.setFullScreen(true); TODO
         });
         global_1.Global.socket.on('auth denied', () => {
             // TODO: get a new token
@@ -94,7 +96,7 @@ const utils_1 = require("./utils");
         const url = 'https://raino-backend.glitch.me/register/';
         const json = await utils_1.request('POST', url, data);
         const res = utils_1.parseJson(json);
-        if (typeof res !== 'object') {
+        if (res === null) {
             return alert('Server error!');
         }
         if (!res.success) {
