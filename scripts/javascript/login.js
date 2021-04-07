@@ -109,16 +109,22 @@ const utils_1 = require("./utils");
             return;
         const email = getI('#form-email').value.trim();
         const password = getI('#form-password').value;
+        if (!email) {
+            return alert('Email cannot be empty');
+        }
+        if (!password) {
+            return alert('Password cannot be empty');
+        }
         if (!utils_1.validEmail(email)) {
             return alert('Invalid email address');
         }
         if (password.length < 3 || password.length > 100) {
             return alert('Password too long or short');
         }
-        const data = { email, password };
-        const url = 'https://raino-backend.glitch.me/login/';
         utils_1.get('#send-login-form').classList.add('signing');
         hideInputs();
+        const data = { email, password };
+        const url = 'https://raino-backend.glitch.me/login/';
         const json = await utils_1.request('POST', url, data);
         const res = utils_1.parseJson(json);
         if (res === null) {

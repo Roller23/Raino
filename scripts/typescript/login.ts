@@ -114,16 +114,22 @@ import { authSocket, fadeOut, get, getAll, parseJson, request, validEmail } from
     if (authInProgress) return;
     const email: string = getI('#form-email').value.trim();
     const password: string = getI('#form-password').value;
+    if (!email) {
+      return alert('Email cannot be empty');
+    }
+    if (!password) {
+      return alert('Password cannot be empty');
+    }
     if (!validEmail(email)) {
       return alert('Invalid email address');
     }
     if (password.length < 3 || password.length > 100) {
       return alert('Password too long or short');
     }
-    const data = {email, password};
-    const url = 'https://raino-backend.glitch.me/login/';
     get('#send-login-form')!.classList.add('signing');
     hideInputs();
+    const data = {email, password};
+    const url = 'https://raino-backend.glitch.me/login/';
     const json = await request('POST', url, data);
     const res = parseJson(json);
     if (res === null) {
