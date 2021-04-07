@@ -14,6 +14,11 @@ const shouldScroll = (el: HTMLElement): boolean => {
 
 export function registerChatEvents(): void {
   const socket = Global.socket!;
+  if (socket.hasListeners('message')) {
+    // socket already has these listeners so return
+    // to prevent adding them again
+    return;
+  }
   socket.on('message', (data: Message) => {
     const prevMessage = messages[messages.length - 1];
     const sameUser = prevMessage && prevMessage.from === data.from;

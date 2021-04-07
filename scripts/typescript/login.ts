@@ -12,7 +12,6 @@ import { authSocket, fadeOut, get, getAll, parseJson, request, validEmail } from
   
   let loggingIn: boolean = true;
   let authInProgress: boolean = false;
-  let shouldInitSocketListeners = true;
 
   showInputs();
 
@@ -58,15 +57,11 @@ import { authSocket, fadeOut, get, getAll, parseJson, request, validEmail } from
   function initSocketAuth() {
     hideInputs();
     Global.socket = io('https://raino-backend.glitch.me');
-    shouldInitSocketListeners = true;
     Global.socket.on('connected', () => {
       authSocket();
     });
     Global.socket.on('authenticated', async () => {
-      if (shouldInitSocketListeners) {
-        registerChatEvents();
-      }
-      shouldInitSocketListeners = false;
+      registerChatEvents();
       get('#send-login-form')!.classList.remove('signing', 'authorizing');
       get('#send-login-form')!.classList.add('success');
       await fadeOut(get('.login-container')!, 400);
