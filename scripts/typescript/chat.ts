@@ -19,7 +19,7 @@ export function registerChatEvents(): void {
       // append a new tile
       const tile = create('div', {class: 'tile'});
       const avatarWrap = create('div', {class: 'avatar-wrap'});
-      avatarWrap.appendChild(create('img', {src: 'https://cdn.discordapp.com/emojis/804006374421299261.png?v=1'}));
+      avatarWrap.appendChild(create('img', {src: 'https://cdn.discordapp.com/avatars/310875718651346945/1c9539f3583ff0770c37a31382d9f5c1.png'}));
       tile.appendChild(avatarWrap);
       const right = create('div', {class: 'right'});
       const top = create('div', {class: 'top'});
@@ -35,6 +35,7 @@ export function registerChatEvents(): void {
       const lastTile = get('.messages-wrapper .tile:last-child .content-wrapper')!;
       lastTile.appendChild(msgWrap);
     }
+    get('.messages-wrapper')!.scrollTop = get('.messages-wrapper')!.scrollHeight * 2;
     messages.push(data);
   });
 }

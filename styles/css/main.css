@@ -250,12 +250,11 @@
   width: 100%;
   border-radius: 15px;
   background-color: unset;
-  display: flex;
-  flex-direction: column;
 }
 .main-screen-container .main-wrapper .middle-panel .messages-wrapper {
   width: 100%;
-  height: 100%;
+  height: calc(100% - 60px);
+  overflow-y: auto;
 }
 .main-screen-container .main-wrapper .middle-panel .messages-wrapper .tile {
   width: 100%;
@@ -266,6 +265,7 @@
   display: grid;
   grid-template-columns: 70px calc(100% - 70px);
   gap: 10px;
+  margin-bottom: 10px;
 }
 .main-screen-container .main-wrapper .middle-panel .messages-wrapper .tile .avatar-wrap {
   width: 70px;
