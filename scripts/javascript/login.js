@@ -7,6 +7,8 @@ const socket_io_client_1 = __importDefault(require("socket.io-client"));
 const global_1 = require("./global");
 const utils_1 = require("./utils");
 (async () => {
+    const remote = require('electron').remote;
+    const win = remote.getCurrentWindow();
     const getI = (s) => utils_1.get(s);
     let loggingIn = true;
     let authInProgress = false;
@@ -55,6 +57,7 @@ const utils_1 = require("./utils");
             utils_1.get('#send-login-form').classList.remove('signing', 'authorizing');
             utils_1.get('#send-login-form').classList.add('success');
             await utils_1.fadeOut(utils_1.get('.login-container'), 400);
+            win.setFullScreen(true);
         });
         global_1.Global.socket.on('auth denied', () => {
             // TODO: get a new token
@@ -69,11 +72,17 @@ const utils_1 = require("./utils");
         const email = getI('#form-email').value.trim();
         const password = getI('#form-password').value;
         const nickname = getI('#form-nickname').value.trim();
+        if (!email) {
+            return alert('Email cannot be empty');
+        }
         if (!utils_1.validEmail(email)) {
             return alert('Invalid email address');
         }
-        if (password.length < 3 || password.length > 100) {
-            return alert('Password too long or short');
+        if (password.length < 3) {
+            return alert('Password too short');
+        }
+        if (password.length > 100) {
+            return alert('Password too long');
         }
         if (!nickname) {
             return alert('Nickname cannot be empty');

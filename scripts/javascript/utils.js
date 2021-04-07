@@ -58,11 +58,17 @@ function sleep(ms) {
 exports.sleep = sleep;
 function fadeOut(el, ms) {
     return new Promise(resolve => {
-        el.style.opacity = '0';
-        sleep(ms).then(() => {
+        const oldTransition = el.style.transition;
+        const callback = () => {
+            el.style.transition = oldTransition;
             el.style.display = 'none';
+            el.removeEventListener('transitionend', callback);
             resolve();
-        });
+        };
+        el.addEventListener('transitionend', callback);
+        el.style.opacity = '1';
+        el.style.transition = `opacity ${ms}ms`;
+        el.style.opacity = '0';
     });
 }
 exports.fadeOut = fadeOut;

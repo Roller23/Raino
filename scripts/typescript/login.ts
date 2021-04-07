@@ -4,6 +4,9 @@ import { authSocket, fadeOut, get, getAll, parseJson, request, validEmail } from
 
 (async () => {
 
+  const remote = require('electron').remote;
+  const win = remote.getCurrentWindow();
+
   const getI = (s: string) => <HTMLInputElement>get(s);
   
   let loggingIn: boolean = true;
@@ -59,6 +62,7 @@ import { authSocket, fadeOut, get, getAll, parseJson, request, validEmail } from
       get('#send-login-form')!.classList.remove('signing', 'authorizing');
       get('#send-login-form')!.classList.add('success');
       await fadeOut(get('.login-container')!, 400);
+      win.setFullScreen(true);
     });
     Global.socket.on('auth denied', () => {
       // TODO: get a new token
@@ -73,11 +77,17 @@ import { authSocket, fadeOut, get, getAll, parseJson, request, validEmail } from
     const email: string = getI('#form-email').value.trim();
     const password: string = getI('#form-password').value;
     const nickname: string = getI('#form-nickname').value.trim();
+    if (!email) {
+      return alert('Email cannot be empty');
+    }
     if (!validEmail(email)) {
       return alert('Invalid email address');
     }
-    if (password.length < 3 || password.length > 100) {
-      return alert('Password too long or short');
+    if (password.length < 3) {
+      return alert('Password too short');
+    }
+    if (password.length > 100) {
+      return alert('Password too long');
     }
     if (!nickname) {
       return alert('Nickname cannot be empty');

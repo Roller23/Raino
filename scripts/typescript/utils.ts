@@ -55,10 +55,16 @@ export function sleep(ms: number): Promise<void> {
 
 export function fadeOut(el: HTMLElement, ms: number): Promise<void> {
   return new Promise(resolve => {
-    el.style.opacity = '0';
-    sleep(ms).then(() => {
+    const oldTransition = el.style.transition;
+    const callback = (): void => {
+      el.style.transition = oldTransition;
       el.style.display = 'none';
+      el.removeEventListener('transitionend', callback);
       resolve();
-    });
+    }
+    el.addEventListener('transitionend', callback);
+    el.style.opacity = '1';
+    el.style.transition = `opacity ${ms}ms`;
+    el.style.opacity = '0';
   });
 }
