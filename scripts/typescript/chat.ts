@@ -8,6 +8,10 @@ interface Message {
 
 const messages: Message[] = [];
 
+const shouldScroll = (el: HTMLElement): boolean => {
+  return (el.scrollHeight - el.offsetHeight) - el.scrollTop < 10;
+}
+
 export function registerChatEvents(): void {
   const socket = Global.socket!;
   socket.on('message', (data: Message) => {
@@ -15,6 +19,8 @@ export function registerChatEvents(): void {
     const sameUser = prevMessage && prevMessage.from === data.from;
     const wrapper = get('.messages-wrapper')!;
     const msgWrap = create('div', {class: 'content'}, data.message);
+    const messagesContainer = get('.messages-wrapper')!;
+    const scroll = shouldScroll(messagesContainer);
     if (!sameUser) {
       // append a new tile
       const tile = create('div', {class: 'tile'});
@@ -35,7 +41,9 @@ export function registerChatEvents(): void {
       const lastTile = get('.messages-wrapper .tile:last-child .content-wrapper')!;
       lastTile.appendChild(msgWrap);
     }
-    get('.messages-wrapper')!.scrollTop = get('.messages-wrapper')!.scrollHeight * 2;
+    if (scroll) {
+      messagesContainer.scrollTop = messagesContainer.scrollHeight * 2;
+    }
     messages.push(data);
   });
 }

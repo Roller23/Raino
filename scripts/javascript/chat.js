@@ -4,6 +4,9 @@ exports.registerChatEvents = void 0;
 const global_1 = require("./global");
 const utils_1 = require("./utils");
 const messages = [];
+const shouldScroll = (el) => {
+    return (el.scrollHeight - el.offsetHeight) - el.scrollTop < 10;
+};
 function registerChatEvents() {
     const socket = global_1.Global.socket;
     socket.on('message', (data) => {
@@ -11,6 +14,8 @@ function registerChatEvents() {
         const sameUser = prevMessage && prevMessage.from === data.from;
         const wrapper = utils_1.get('.messages-wrapper');
         const msgWrap = utils_1.create('div', { class: 'content' }, data.message);
+        const messagesContainer = utils_1.get('.messages-wrapper');
+        const scroll = shouldScroll(messagesContainer);
         if (!sameUser) {
             // append a new tile
             const tile = utils_1.create('div', { class: 'tile' });
@@ -32,7 +37,9 @@ function registerChatEvents() {
             const lastTile = utils_1.get('.messages-wrapper .tile:last-child .content-wrapper');
             lastTile.appendChild(msgWrap);
         }
-        utils_1.get('.messages-wrapper').scrollTop = utils_1.get('.messages-wrapper').scrollHeight * 2;
+        if (scroll) {
+            messagesContainer.scrollTop = messagesContainer.scrollHeight * 2;
+        }
         messages.push(data);
     });
 }
