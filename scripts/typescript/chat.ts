@@ -1,4 +1,3 @@
-import { title } from "node:process";
 import { Global } from "./global";
 import { create, get } from "./utils";
 
