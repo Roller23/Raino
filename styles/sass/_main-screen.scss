@@ -114,7 +114,10 @@
           border-radius: calc(#{$panelRadius} - 5px);
           outline: none;
           padding: 0px 10px;
+          padding-top: 12px;
           color: rgb(216, 216, 216);
+          resize: none;
+          font-family: 'Inter', sans-serif;
         }
       }
     }

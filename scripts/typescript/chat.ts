@@ -50,11 +50,13 @@ export function registerChatEvents(): void {
 
 (async () => {
   get('.message-input')!.addEventListener('keydown', function(this: HTMLElement, e: KeyboardEvent): void {
-    if (e.code !== 'Enter') return;
-    const self = <HTMLInputElement>this;
-    const message = self.value.trim();
-    self.value = '';
-    if (!message) return;
-    Global.socket!.emit('message', message);
+    if (e.code === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      const self = <HTMLInputElement>this;
+      const message = self.value.trim();
+      self.value = '';
+      if (!message) return;
+      Global.socket!.emit('message', message);
+    }
   });
 })();

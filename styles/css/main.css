@@ -315,7 +315,10 @@
   border-radius: calc(15px - 5px);
   outline: none;
   padding: 0px 10px;
+  padding-top: 12px;
   color: #d8d8d8;
+  resize: none;
+  font-family: "Inter", sans-serif;
 }
 .main-screen-container .main-wrapper .right-panel {
   width: 400px;
