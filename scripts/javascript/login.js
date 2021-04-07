@@ -37,6 +37,7 @@ const utils_1 = require("./utils");
         const swapUp = utils_1.get('.swap-wrap .up');
         loggingIn = !loggingIn;
         if (!loggingIn) {
+            utils_1.get('.login-container .input-wrapper').style.height = 'auto';
             wrapper.style.height = wrapper.scrollHeight + 'px';
             swapIn.style.height = '0%';
             swapUp.style.opacity = '1';

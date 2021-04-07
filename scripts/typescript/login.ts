@@ -41,6 +41,7 @@ import { authSocket, fadeOut, get, getAll, parseJson, request, validEmail } from
     const swapUp = get('.swap-wrap .up')!;
     loggingIn = !loggingIn;
     if (!loggingIn) {
+      get('.login-container .input-wrapper')!.style.height = 'auto';
       wrapper.style.height = wrapper.scrollHeight + 'px';
       swapIn.style.height = '0%';
       swapUp.style.opacity = '1';
