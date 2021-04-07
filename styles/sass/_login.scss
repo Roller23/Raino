@@ -86,6 +86,10 @@
       height: 0px;
       transition: 0.3s;
       overflow: hidden;
+
+      input:first-child {
+        margin-top: 0px;
+      }
     }
     .small {
       color: rgb(175, 175, 175);
