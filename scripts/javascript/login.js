@@ -13,13 +13,17 @@ const utils_1 = require("./utils");
     const getI = (s) => utils_1.get(s);
     let loggingIn = true;
     let authInProgress = false;
+    let registerInProgress = false;
+    const button = utils_1.get('#send-login-form');
+    const buttonText = button.querySelector('.text');
+    let oldButtonText = buttonText.innerText;
     showInputs();
     if (localStorage.token && localStorage.tokenSelector) {
         hideInputs();
         console.log('signing in with token');
         global_1.Global.token = localStorage.token;
         global_1.Global.tokenSelector = localStorage.tokenSelector;
-        utils_1.get('#send-login-form').classList.add('authorizing');
+        buttonText.innerText = 'Authorizing...';
         initSocketAuth();
     }
     function showInputs() {
@@ -57,20 +61,19 @@ const utils_1 = require("./utils");
         });
         global_1.Global.socket.on('authenticated', async () => {
             chat_1.registerChatEvents();
-            utils_1.get('#send-login-form').classList.remove('signing', 'authorizing');
-            utils_1.get('#send-login-form').classList.add('success');
+            buttonText.innerText = 'Success!';
             await utils_1.fadeOut(utils_1.get('.login-container'), 400);
             // win.setFullScreen(true); TODO
         });
         global_1.Global.socket.on('auth denied', () => {
             // TODO: get a new token
             showInputs();
-            utils_1.get('#send-login-form').classList.remove('signing', 'authorizing');
+            buttonText.innerText = 'Continue';
             alert('Could not sign in! Try again');
         });
     }
     async function register() {
-        if (authInProgress)
+        if (authInProgress || registerInProgress)
             return;
         const email = getI('#form-email').value.trim();
         const password = getI('#form-password').value;
@@ -93,10 +96,14 @@ const utils_1 = require("./utils");
         if (nickname.length > 20) {
             return alert('Nickname can be maximum 20 characters');
         }
+        buttonText.innerText = 'Registering...';
+        registerInProgress = true;
         const data = { email, password, nickname };
         const url = 'https://raino-backend.glitch.me/register/';
         const json = await utils_1.request('POST', url, data);
         const res = utils_1.parseJson(json);
+        registerInProgress = false;
+        buttonText.innerText = 'Continue';
         if (res === null) {
             return alert('Server error!');
         }
@@ -108,7 +115,7 @@ const utils_1 = require("./utils");
         toggleForm(utils_1.get('#signup-btn'));
     }
     async function login() {
-        if (authInProgress)
+        if (authInProgress || registerInProgress)
             return;
         const email = getI('#form-email').value.trim();
         const password = getI('#form-password').value;
@@ -124,23 +131,24 @@ const utils_1 = require("./utils");
         if (password.length < 3 || password.length > 100) {
             return alert('Password too long or short');
         }
-        utils_1.get('#send-login-form').classList.add('signing');
         hideInputs();
+        buttonText.innerText = 'Signing in...';
         const data = { email, password };
         const url = 'https://raino-backend.glitch.me/login/';
         const json = await utils_1.request('POST', url, data);
         const res = utils_1.parseJson(json);
         if (res === null) {
+            buttonText.innerText = 'Continue';
             showInputs();
-            utils_1.get('#send-login-form').classList.remove('signing');
             return alert('Server error!');
         }
         if (!res.success) {
+            buttonText.innerText = 'Continue';
             showInputs();
             // TODO: convert msg to something more friendly
             return alert(res.msg);
         }
-        utils_1.get('#send-login-form').classList.add('authorizing');
+        buttonText.innerText = 'Authorizing...';
         localStorage.token = res.token;
         localStorage.tokenSelector = res.selector;
         global_1.Global.token = res.token;
@@ -176,5 +184,14 @@ const utils_1 = require("./utils");
         localStorage.removeItem('tokenSelector');
         // await request('POST', 'https://raino-backend.glitch.me/logout/');
         window.location.reload();
+    });
+    button.addEventListener('mouseenter', function (e) {
+        if (registerInProgress || authInProgress)
+            return;
+        oldButtonText = buttonText.innerText;
+        buttonText.innerText = 'To infinity and beyond!';
+    });
+    button.addEventListener('mouseleave', function (e) {
+        buttonText.innerText = oldButtonText;
     });
 })();

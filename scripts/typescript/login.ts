@@ -12,6 +12,11 @@ import { authSocket, fadeOut, get, getAll, parseJson, request, validEmail } from
   
   let loggingIn: boolean = true;
   let authInProgress: boolean = false;
+  let registerInProgress: boolean = false;
+
+  const button = get('#send-login-form')!;
+  const buttonText = button.querySelector<HTMLElement>('.text')!;
+  let oldButtonText = buttonText.innerText;
 
   showInputs();
 
@@ -20,7 +25,7 @@ import { authSocket, fadeOut, get, getAll, parseJson, request, validEmail } from
     console.log('signing in with token')
     Global.token = localStorage.token;
     Global.tokenSelector = localStorage.tokenSelector;
-    get('#send-login-form')!.classList.add('authorizing');
+    buttonText.innerText = 'Authorizing...';
     initSocketAuth();
   }
 
@@ -62,21 +67,20 @@ import { authSocket, fadeOut, get, getAll, parseJson, request, validEmail } from
     });
     Global.socket.on('authenticated', async () => {
       registerChatEvents();
-      get('#send-login-form')!.classList.remove('signing', 'authorizing');
-      get('#send-login-form')!.classList.add('success');
+      buttonText.innerText = 'Success!';
       await fadeOut(get('.login-container')!, 400);
       // win.setFullScreen(true); TODO
     });
     Global.socket.on('auth denied', () => {
       // TODO: get a new token
       showInputs();
-      get('#send-login-form')!.classList.remove('signing', 'authorizing');
+      buttonText.innerText = 'Continue';
       alert('Could not sign in! Try again');
     });
   }
 
   async function register() {
-    if (authInProgress) return;
+    if (authInProgress || registerInProgress) return;
     const email: string = getI('#form-email').value.trim();
     const password: string = getI('#form-password').value;
     const nickname: string = getI('#form-nickname').value.trim();
@@ -98,10 +102,14 @@ import { authSocket, fadeOut, get, getAll, parseJson, request, validEmail } from
     if (nickname.length > 20) {
       return alert('Nickname can be maximum 20 characters');
     }
+    buttonText.innerText = 'Registering...';
+    registerInProgress = true;
     const data = {email, password, nickname};
     const url = 'https://raino-backend.glitch.me/register/';
     const json = await request('POST', url, data);
     const res = parseJson(json);
+    registerInProgress = false;
+    buttonText.innerText = 'Continue';
     if (res === null) {
       return alert('Server error!');
     }
@@ -114,7 +122,7 @@ import { authSocket, fadeOut, get, getAll, parseJson, request, validEmail } from
   }
 
   async function login() {
-    if (authInProgress) return;
+    if (authInProgress || registerInProgress) return;
     const email: string = getI('#form-email').value.trim();
     const password: string = getI('#form-password').value;
     if (!email) {
@@ -129,23 +137,24 @@ import { authSocket, fadeOut, get, getAll, parseJson, request, validEmail } from
     if (password.length < 3 || password.length > 100) {
       return alert('Password too long or short');
     }
-    get('#send-login-form')!.classList.add('signing');
     hideInputs();
+    buttonText.innerText = 'Signing in...';
     const data = {email, password};
     const url = 'https://raino-backend.glitch.me/login/';
     const json = await request('POST', url, data);
     const res = parseJson(json);
     if (res === null) {
+      buttonText.innerText = 'Continue';
       showInputs();
-      get('#send-login-form')!.classList.remove('signing');
       return alert('Server error!');
     }
     if (!res.success) {
+      buttonText.innerText = 'Continue';
       showInputs();
       // TODO: convert msg to something more friendly
       return alert(res.msg);
     }
-    get('#send-login-form')!.classList.add('authorizing');
+    buttonText.innerText = 'Authorizing...';
     localStorage.token = res.token;
     localStorage.tokenSelector = res.selector;
     Global.token = res.token;
@@ -184,6 +193,16 @@ import { authSocket, fadeOut, get, getAll, parseJson, request, validEmail } from
     localStorage.removeItem('tokenSelector');
     // await request('POST', 'https://raino-backend.glitch.me/logout/');
     window.location.reload();
+  });
+
+  button.addEventListener('mouseenter', function(this: HTMLElement, e: Event) {
+    if (registerInProgress || authInProgress) return;
+    oldButtonText = buttonText.innerText;
+    buttonText.innerText = 'To infinity and beyond!';
+  });
+
+  button.addEventListener('mouseleave', function(this: HTMLElement, e: Event) {
+    buttonText.innerText = oldButtonText;
   });
 
 })();

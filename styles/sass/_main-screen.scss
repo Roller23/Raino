@@ -57,14 +57,11 @@
           border-radius: 15px;
           overflow: hidden;
           padding: 10px;
-          display: grid;
-          grid-template-columns: $avatarSize calc(100% - #{$avatarSize});
-          gap: 10px;
           margin-bottom: 10px;
           .avatar-wrap {
             width: $avatarSize;
             height: $avatarSize;
-
+            display: inline-block;
             img {
               width: 100%;
               height: 100%;
@@ -74,9 +71,10 @@
           }
 
           .right {
-            width: 100%;
+            width: calc(100% - #{$avatarSize});
             padding-left: 10px;
-
+            display: inline-block;
+            vertical-align: top;
             .top {
               width: 100%;
               .nick {

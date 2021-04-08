@@ -120,29 +120,8 @@
       transition: transform 0.3s;
       overflow: hidden;
 
-      &::after {
-        content: "Continue";
-      }
-
-      &.signing::after {
-        content: "Signing in..." !important;
-      }
-
-      &.authorizing::after {
-        content: "Authorizing..." !important;
-      }
-
-      &.success::after {
-        content: "Success!" !important;
-      }
-
       &:hover {
         transform: scale(1.05);
-        &::after {
-          position: relative;
-          z-index: 50;
-          content: "To infinity and beyond!";
-        }
         .background {
           width: calc(100% + 20px);
         }
@@ -161,6 +140,11 @@
         background-color: $darkBlue;
         transition: 0.3s;
         transform: skew(-15deg);
+      }
+
+      .text {
+        position: relative;
+        z-index: 20;
       }
     }
   }

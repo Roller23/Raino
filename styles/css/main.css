@@ -175,25 +175,8 @@
   transition: transform 0.3s;
   overflow: hidden;
 }
-.login-container .right .login::after {
-  content: "Continue";
-}
-.login-container .right .login.signing::after {
-  content: "Signing in..." !important;
-}
-.login-container .right .login.authorizing::after {
-  content: "Authorizing..." !important;
-}
-.login-container .right .login.success::after {
-  content: "Success!" !important;
-}
 .login-container .right .login:hover {
   transform: scale(1.05);
-}
-.login-container .right .login:hover::after {
-  position: relative;
-  z-index: 50;
-  content: "To infinity and beyond!";
 }
 .login-container .right .login:hover .background {
   width: calc(100% + 20px);
@@ -211,6 +194,10 @@
   background-color: #4C7BAB;
   transition: 0.3s;
   transform: skew(-15deg);
+}
+.login-container .right .login .text {
+  position: relative;
+  z-index: 20;
 }
 
 .main-screen-container {
@@ -265,14 +252,12 @@
   border-radius: 15px;
   overflow: hidden;
   padding: 10px;
-  display: grid;
-  grid-template-columns: 70px calc(100% - 70px);
-  gap: 10px;
   margin-bottom: 10px;
 }
 .main-screen-container .main-wrapper .middle-panel .messages-wrapper .tile .avatar-wrap {
   width: 70px;
   height: 70px;
+  display: inline-block;
 }
 .main-screen-container .main-wrapper .middle-panel .messages-wrapper .tile .avatar-wrap img {
   width: 100%;
@@ -281,8 +266,10 @@
   border-radius: 15px;
 }
 .main-screen-container .main-wrapper .middle-panel .messages-wrapper .tile .right {
-  width: 100%;
+  width: calc(100% - 70px);
   padding-left: 10px;
+  display: inline-block;
+  vertical-align: top;
 }
 .main-screen-container .main-wrapper .middle-panel .messages-wrapper .tile .right .top {
   width: 100%;
