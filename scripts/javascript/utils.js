@@ -3,7 +3,7 @@
  * Global utility functions
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.create = exports.fadeOut = exports.sleep = exports.authSocket = exports.validEmail = exports.parseJson = exports.request = exports.getAll = exports.get = void 0;
+exports.create = exports.fadeOut = exports.sleep = exports.authSocket = exports.validEmail = exports.parseJson = exports.request = exports.onAll = exports.on = exports.getAll = exports.get = void 0;
 const global_1 = require("./global");
 function get(selector) {
     return document.querySelector(selector);
@@ -13,6 +13,18 @@ function getAll(selector) {
     return document.querySelectorAll(selector);
 }
 exports.getAll = getAll;
+function on(el, e, callback) {
+    const element = typeof el === 'string' ? get(el) : el;
+    element.addEventListener(e, callback);
+    return element;
+}
+exports.on = on;
+function onAll(el, e, callback) {
+    const elements = typeof el === 'string' ? getAll(el) : el;
+    elements.forEach(element => on(element, e, callback));
+    return elements;
+}
+exports.onAll = onAll;
 async function request(method, url, data = {}) {
     const options = {
         headers: {

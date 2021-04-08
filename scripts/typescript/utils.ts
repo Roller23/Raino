@@ -12,6 +12,18 @@ export function getAll(selector: string): NodeListOf<HTMLElement> {
   return document.querySelectorAll(selector);
 }
 
+export function on(el: string | HTMLElement, e: string, callback: EventListenerOrEventListenerObject): HTMLElement {
+  const element = typeof el === 'string' ? get(el)! : el;
+  element.addEventListener(e, callback);
+  return element;
+}
+
+export function onAll(el: string | NodeListOf<HTMLElement>, e: string, callback: EventListenerOrEventListenerObject): NodeListOf<HTMLElement> {
+  const elements = typeof el === 'string' ? getAll(el) : el;
+  elements.forEach(element => on(element, e, callback));
+  return elements;
+}
+
 export async function request(method: string, url: string, data: Object = {}): Promise<string> {
   const options = {
     headers: {

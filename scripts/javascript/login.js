@@ -192,6 +192,8 @@ const utils_1 = require("./utils");
         buttonText.innerText = 'To infinity and beyond!';
     });
     button.addEventListener('mouseleave', function (e) {
+        if (registerInProgress || authInProgress)
+            return;
         buttonText.innerText = oldButtonText;
     });
 })();

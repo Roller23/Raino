@@ -1,4 +1,4 @@
-import { get } from "./utils";
+import { getAll, onAll } from "./utils";
 
 const remote = require('electron').remote;
 
@@ -6,7 +6,7 @@ const win = remote.getCurrentWindow();
 const isMacOS = (process.platform === "darwin")
 
 if (!isMacOS) {
-    get('.window-controls')!.style.display = 'grid';
+    getAll('.window-controls').forEach(el => el.style.display = 'grid');
 }
 
 document.onreadystatechange = (event: Event) => {
@@ -20,21 +20,13 @@ window.onbeforeunload = () => {
 }
 
 function handleWindowControls() {
-    get('#minimizeBtn')!.addEventListener("click", (event: Event) => {
-        win.minimize();
-    });
+    onAll('.window-controls .minimizeBtn', 'click', e => win.minimize());
 
-    get('#maximizeBtn')!.addEventListener("click", (event: Event) => {
-        win.maximize();
-    });
+    onAll('.window-controls .maximizeBtn', 'click', e => win.maximize());
 
-    get('#restoreBtn')!.addEventListener("click", (event: Event) => {
-        win.unmaximize();
-    });
+    onAll('.window-controls .restoreBtn', 'click', e => win.unmaximize());
 
-    get('#closeBtn')!.addEventListener("click", (event: Event) => {
-        win.hide();
-    });
+    onAll('.window-controls .closeBtn', 'click', e => win.hide());
 
     toggleMaxRestoreButtons();
     win.on('maximize', toggleMaxRestoreButtons);
@@ -42,12 +34,12 @@ function handleWindowControls() {
 
     function toggleMaxRestoreButtons(): void {
         if(win.isMaximized()) {
-            get("#maximizeBtn")!.style.display="none";
-            get("#restoreBtn")!.style.display="flex";
+            getAll('.maximizeBtn').forEach(btn => btn.style.display = 'none');
+            getAll('.restoreBtn').forEach(btn => btn.style.display = 'flex');
         }
         else {
-            get("#maximizeBtn")!.style.display="flex";
-            get("#restoreBtn")!.style.display="none";
+            getAll('.maximizeBtn').forEach(btn => btn.style.display = 'flex');
+            getAll('.restoreBtn').forEach(btn => btn.style.display = 'none');
         }
     }
 }

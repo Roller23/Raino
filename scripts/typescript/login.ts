@@ -202,6 +202,7 @@ import { authSocket, fadeOut, get, getAll, parseJson, request, validEmail } from
   });
 
   button.addEventListener('mouseleave', function(this: HTMLElement, e: Event) {
+    if (registerInProgress || authInProgress) return;
     buttonText.innerText = oldButtonText;
   });
 

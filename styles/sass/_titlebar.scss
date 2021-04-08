@@ -1,4 +1,4 @@
-.titlebar {
+.titlebar, .top-bar {
   position: absolute;
   top: 0px;
   left: 0px;
@@ -47,16 +47,16 @@
       }
     }
 
-    #closeBtn {
+    .closeBtn {
       grid-column: 3;
     }
-    #minimizeBtn {
+    .minimizeBtn {
       grid-column: 1;
     }
-    #maximizeBtn, #restoreBtn {
+    .maximizeBtn, .restoreBtn {
       grid-column: 2;
     }
-    #restoreBtn {
+    .restoreBtn {
       display: none;
     }
   }
