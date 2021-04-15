@@ -63,7 +63,6 @@
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-  background-image: url(../../images/bg.gif);
 }
 .login-container .blur-layer {
   position: absolute;

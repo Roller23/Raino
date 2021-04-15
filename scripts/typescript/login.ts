@@ -2,8 +2,13 @@ import io from 'socket.io-client';
 import { registerChatEvents } from './chat';
 import { Global } from './global';
 import { authSocket, fadeOut, get, getAll, parseJson, request, validEmail } from './utils'
+import * as fs from 'fs'
 
 (async () => {
+
+  const splashScreens: string[] = fs.readdirSync('./splash_screens/');
+  const splashScreen: string = splashScreens[Math.floor(Math.random() * splashScreens.length)];
+  get('.login-container')!.style.backgroundImage = `url(./splash_screens/${splashScreen})`;
 
   const remote = require('electron').remote;
   const win = remote.getCurrentWindow();
