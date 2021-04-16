@@ -104,8 +104,13 @@ const renderMessage = (channel: string, message: ServerMessage): void => {
   const roomData = roomsData[channel];
   const prevMessage = roomData.messages[roomData.messages.length - 1];
   const sameUser = prevMessage && prevMessage.from === message.from;
-  const minute = 60;
-  const over5MinutesPassed = prevMessage && ((Date.now() - Number(new Date(prevMessage.date))) / 1000) > (minute * 3);
+  const over5MinutesPassed = prevMessage && ((): boolean => {
+    const msgDate = new Date(message.date);
+    const prevMsgDate = new Date(prevMessage.date);
+    const minute = 60;
+    const maxLimit = minute * 3;
+    return ((msgDate.getTime() - prevMsgDate.getTime()) / 1000) > maxLimit;
+  })();
   const shouldAddNewTile = !sameUser || over5MinutesPassed;
   const messagesContainer = get('.messages-wrapper')!;
   const scrollContainer = shouldScroll(messagesContainer);
