@@ -1,6 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.registerChatEvents = void 0;
+const moment_timezone_1 = __importDefault(require("moment-timezone"));
 const global_1 = require("./global");
 const utils_1 = require("./utils");
 ;
@@ -11,7 +15,23 @@ const roomsData = {
     }
 };
 /**
- *
+ * @param date a Date object or a number (timestamp)
+ * @param timezone a string representation of source timezone
+ * @returns string representation of the date (from now)
+ */
+const formatDate = (date, timezone) => {
+    date = new Date(date);
+    const serverTime = moment_timezone_1.default.tz(date, timezone);
+    return moment_timezone_1.default.tz(serverTime, global_1.Global.timezone).calendar(null, {
+        lastDay: '[Yesterday at] HH:mm',
+        sameDay: '[Today at] HH:mm',
+        nextDay: '[Tomorrow at] HH:mm',
+        lastWeek: '[last] dddd [at] HH:mm',
+        nextWeek: 'dddd [at] HH:mm',
+        sameElse: 'L'
+    });
+};
+/**
  * @param el element to be tested
  * @returns a boolean indicating whether the element should be scrolled to bottom
  */
@@ -19,7 +39,6 @@ const shouldScroll = (el) => {
     return (el.scrollHeight - el.offsetHeight) - el.scrollTop < 10;
 };
 /**
- *
  * @param data Message data
  * @returns HTMLElement with the message
  */
@@ -33,7 +52,6 @@ const scrollDownMessagesContainer = (wrapper) => {
     wrapper.scrollTop = wrapper.scrollHeight * 2;
 };
 /**
- *
  * @param data Message object used to populate the returned element's content
  * @returns HTMLElement object containing the Message data
  */
@@ -45,7 +63,7 @@ const createMessageTile = (data) => {
     const right = utils_1.create('div', { class: 'right' });
     const top = utils_1.create('div', { class: 'top' });
     top.appendChild(utils_1.create('div', { class: 'nick' }, data.from));
-    top.appendChild(utils_1.create('div', { class: 'time' }, 'Today'));
+    top.appendChild(utils_1.create('div', { class: 'time' }, formatDate(data.date, data.timezone)));
     right.appendChild(top);
     const messagesWrap = utils_1.create('div', { class: 'content-wrapper' });
     right.appendChild(messagesWrap);
@@ -82,6 +100,7 @@ function registerChatEvents() {
         return;
     }
     socket.on('message', (data) => {
+        console.log('message', data);
         const prevMessage = roomsData.GLOBAL.messages[roomsData.GLOBAL.messages.length - 1];
         const sameUser = prevMessage && prevMessage.from === data.from;
         const wrapper = utils_1.get('.messages-wrapper');

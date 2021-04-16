@@ -1,9 +1,12 @@
+import moment from 'moment-timezone';
 import { Global } from "./global";
 import { create, get } from "./utils";
 
 interface Message {
   message: string;
   from: string;
+  date: Date,
+  timezone: string
 };
 
 interface RoomData {
@@ -19,7 +22,25 @@ const roomsData: RoomData = {
 };
 
 /**
- * 
+ * @param date a Date object or a number (timestamp)
+ * @param timezone a string representation of source timezone
+ * @returns string representation of the date (from now)
+ */
+
+const formatDate = (date: Date | number, timezone: string): string => {
+  date = new Date(date);
+  const serverTime = moment.tz(date, timezone)
+  return moment.tz(serverTime, Global.timezone).calendar(null, {
+    lastDay: '[Yesterday at] HH:mm',
+    sameDay: '[Today at] HH:mm',
+    nextDay: '[Tomorrow at] HH:mm',
+    lastWeek: '[last] dddd [at] HH:mm',
+    nextWeek: 'dddd [at] HH:mm',
+    sameElse: 'L'
+  });
+}
+
+/**
  * @param el element to be tested
  * @returns a boolean indicating whether the element should be scrolled to bottom
  */
@@ -29,7 +50,6 @@ const shouldScroll = (el: HTMLElement): boolean => {
 }
 
 /**
- * 
  * @param data Message data
  * @returns HTMLElement with the message
  */
@@ -47,7 +67,6 @@ const scrollDownMessagesContainer = (wrapper: HTMLElement): void => {
 }
 
 /**
- * 
  * @param data Message object used to populate the returned element's content
  * @returns HTMLElement object containing the Message data
  */
@@ -60,7 +79,7 @@ const createMessageTile = (data: Message): HTMLElement => {
   const right = create('div', {class: 'right'});
   const top = create('div', {class: 'top'});
   top.appendChild(create('div', {class: 'nick'}, data.from));
-  top.appendChild(create('div', {class: 'time'}, 'Today'));
+  top.appendChild(create('div', {class: 'time'}, formatDate(data.date, data.timezone)));
   right.appendChild(top);
   const messagesWrap = create('div', {class: 'content-wrapper'});
   right.appendChild(messagesWrap);
@@ -99,6 +118,7 @@ export function registerChatEvents(): void {
     return;
   }
   socket.on('message', (data: Message) => {
+    console.log('message', data);
     const prevMessage = roomsData.GLOBAL.messages[roomsData.GLOBAL.messages.length - 1];
     const sameUser = prevMessage && prevMessage.from === data.from;
     const wrapper = get('.messages-wrapper')!;
