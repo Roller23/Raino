@@ -27,7 +27,7 @@ const formatDate = (date, timezone) => {
         sameDay: '[Today at] HH:mm',
         nextDay: '[Tomorrow at] HH:mm',
         lastWeek: '[last] dddd [at] HH:mm',
-        nextWeek: 'dddd [at] HH:mm',
+        nextWeek: 'Next dddd [at] HH:mm',
         sameElse: 'L'
     });
 };
@@ -52,7 +52,7 @@ const scrollDownMessagesContainer = (wrapper) => {
     wrapper.scrollTop = wrapper.scrollHeight * 2;
 };
 /**
- * @param data Message object used to populate the returned element's content
+ * @param data ServerMessage object used to populate the returned element's content
  * @returns HTMLElement object containing the Message data
  */
 const createMessageTile = (data) => {

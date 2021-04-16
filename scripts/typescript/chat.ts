@@ -2,16 +2,17 @@ import moment from 'moment-timezone';
 import { Global } from "./global";
 import { create, get } from "./utils";
 
-interface Message {
+interface ServerMessage {
   message: string;
   from: string;
-  date: string,
-  timezone: string
+  userID: string;
+  date: string;
+  timezone: string;
 };
 
 interface RoomData {
   [key: string]: {
-    messages: Message[]
+    messages: ServerMessage[]
   }
 };
 
@@ -35,7 +36,7 @@ const formatDate = (date: Date | string | number, timezone: string): string => {
     sameDay: '[Today at] HH:mm',
     nextDay: '[Tomorrow at] HH:mm',
     lastWeek: '[last] dddd [at] HH:mm',
-    nextWeek: 'dddd [at] HH:mm',
+    nextWeek: 'Next dddd [at] HH:mm',
     sameElse: 'L'
   });
 }
@@ -54,7 +55,7 @@ const shouldScroll = (el: HTMLElement): boolean => {
  * @returns HTMLElement with the message
  */
 
-const createMessage = (data: Message): HTMLElement => {
+const createMessage = (data: ServerMessage): HTMLElement => {
   return create('div', {class: 'content'}, data.message);
 }
 
@@ -67,11 +68,11 @@ const scrollDownMessagesContainer = (wrapper: HTMLElement): void => {
 }
 
 /**
- * @param data Message object used to populate the returned element's content
+ * @param data ServerMessage object used to populate the returned element's content
  * @returns HTMLElement object containing the Message data
  */
 
-const createMessageTile = (data: Message): HTMLElement => {
+const createMessageTile = (data: ServerMessage): HTMLElement => {
   const tile = create('div', {class: 'tile'});
   const avatarWrap = create('div', {class: 'avatar-wrap'});
   avatarWrap.appendChild(create('img', {src: 'https://cdn.discordapp.com/avatars/310875718651346945/1c9539f3583ff0770c37a31382d9f5c1.png'}));
@@ -117,7 +118,7 @@ export function registerChatEvents(): void {
     // to prevent adding them again
     return;
   }
-  socket.on('message', (data: Message) => {
+  socket.on('message', (data: ServerMessage) => {
     console.log('message', data);
     const prevMessage = roomsData.GLOBAL.messages[roomsData.GLOBAL.messages.length - 1];
     const sameUser = prevMessage && prevMessage.from === data.from;
