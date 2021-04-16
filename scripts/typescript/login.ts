@@ -6,6 +6,7 @@ import * as fs from 'fs'
 
 (async () => {
 
+  // set a random splashscreen
   const splashScreens: string[] = fs.readdirSync('./splash_screens/');
   const splashScreen: string = splashScreens[Math.floor(Math.random() * splashScreens.length)];
   get('.login-container')!.style.backgroundImage = `url(./splash_screens/${splashScreen})`;

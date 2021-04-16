@@ -28,6 +28,7 @@ const global_1 = require("./global");
 const utils_1 = require("./utils");
 const fs = __importStar(require("fs"));
 (async () => {
+    // set a random splashscreen
     const splashScreens = fs.readdirSync('./splash_screens/');
     const splashScreen = splashScreens[Math.floor(Math.random() * splashScreens.length)];
     utils_1.get('.login-container').style.backgroundImage = `url(./splash_screens/${splashScreen})`;
