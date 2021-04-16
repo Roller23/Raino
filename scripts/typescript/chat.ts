@@ -5,7 +5,7 @@ import { create, get } from "./utils";
 interface Message {
   message: string;
   from: string;
-  date: Date,
+  date: string,
   timezone: string
 };
 
@@ -27,7 +27,7 @@ const roomsData: RoomData = {
  * @returns string representation of the date (from now)
  */
 
-const formatDate = (date: Date | number, timezone: string): string => {
+const formatDate = (date: Date | string | number, timezone: string): string => {
   date = new Date(date);
   const serverTime = moment.tz(date, timezone)
   return moment.tz(serverTime, Global.timezone).calendar(null, {
@@ -121,10 +121,13 @@ export function registerChatEvents(): void {
     console.log('message', data);
     const prevMessage = roomsData.GLOBAL.messages[roomsData.GLOBAL.messages.length - 1];
     const sameUser = prevMessage && prevMessage.from === data.from;
+    const minute = 60;
+    const over5MinutesPassed = prevMessage && ((Date.now() - Number(new Date(prevMessage.date))) / 1000) > (minute * 3);
+    const shouldAddNewTile = !sameUser || over5MinutesPassed;
     const wrapper = get('.messages-wrapper')!;
     const messagesContainer = get('.messages-wrapper')!;
     const scrollContainer = shouldScroll(messagesContainer);
-    if (!sameUser) {
+    if (shouldAddNewTile) {
       // append a new tile
       wrapper.appendChild(createMessageTile(data))
     }

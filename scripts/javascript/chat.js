@@ -103,10 +103,13 @@ function registerChatEvents() {
         console.log('message', data);
         const prevMessage = roomsData.GLOBAL.messages[roomsData.GLOBAL.messages.length - 1];
         const sameUser = prevMessage && prevMessage.from === data.from;
+        const minute = 60;
+        const over5MinutesPassed = prevMessage && ((Date.now() - Number(new Date(prevMessage.date))) / 1000) > (minute * 3);
+        const shouldAddNewTile = !sameUser || over5MinutesPassed;
         const wrapper = utils_1.get('.messages-wrapper');
         const messagesContainer = utils_1.get('.messages-wrapper');
         const scrollContainer = shouldScroll(messagesContainer);
-        if (!sameUser) {
+        if (shouldAddNewTile) {
             // append a new tile
             wrapper.appendChild(createMessageTile(data));
         }
