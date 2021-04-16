@@ -9,8 +9,9 @@ const global_1 = require("./global");
 const utils_1 = require("./utils");
 ;
 ;
+;
 const roomsData = {
-    GLOBAL: {
+    GENERAL_CHANNEL: {
         messages: []
     }
 };
@@ -70,15 +71,38 @@ const createMessageTile = (data) => {
     tile.appendChild(right);
     return tile;
 };
+const renderMessage = (channel, message) => {
+    if (!roomsData[channel]) {
+        console.error('Channel', channel, 'does not exist');
+        return;
+    }
+    const roomData = roomsData[channel];
+    const prevMessage = roomData.messages[roomData.messages.length - 1];
+    const sameUser = prevMessage && prevMessage.from === message.from;
+    const minute = 60;
+    const over5MinutesPassed = prevMessage && ((Date.now() - Number(new Date(prevMessage.date))) / 1000) > (minute * 3);
+    const shouldAddNewTile = !sameUser || over5MinutesPassed;
+    const messagesContainer = utils_1.get('.messages-wrapper');
+    const scrollContainer = shouldScroll(messagesContainer);
+    if (shouldAddNewTile) {
+        // append a new tile
+        messagesContainer.appendChild(createMessageTile(message));
+    }
+    const lastTileContent = utils_1.get('.messages-wrapper .tile:last-child .content-wrapper');
+    lastTileContent.appendChild(createMessage(message));
+    if (scrollContainer) {
+        scrollDownMessagesContainer(messagesContainer);
+    }
+};
 utils_1.get('.message-input').addEventListener('keydown', function (e) {
     if (e.code === 'Enter' && !e.shiftKey) {
         e.preventDefault();
         const self = this;
         const message = self.value.trim();
-        self.value = '';
         if (!message)
             return;
-        global_1.Global.socket.emit('message', message);
+        self.value = '';
+        global_1.Global.socket.emit('message', { message, channel: 'GENERAL_CHANNEL' });
     }
 });
 /**
@@ -101,24 +125,22 @@ function registerChatEvents() {
     }
     socket.on('message', (data) => {
         console.log('message', data);
-        const prevMessage = roomsData.GLOBAL.messages[roomsData.GLOBAL.messages.length - 1];
-        const sameUser = prevMessage && prevMessage.from === data.from;
-        const minute = 60;
-        const over5MinutesPassed = prevMessage && ((Date.now() - Number(new Date(prevMessage.date))) / 1000) > (minute * 3);
-        const shouldAddNewTile = !sameUser || over5MinutesPassed;
-        const wrapper = utils_1.get('.messages-wrapper');
-        const messagesContainer = utils_1.get('.messages-wrapper');
-        const scrollContainer = shouldScroll(messagesContainer);
-        if (shouldAddNewTile) {
-            // append a new tile
-            wrapper.appendChild(createMessageTile(data));
+        if (!roomsData[data.channel]) {
+            console.error('Channel', data.channel, 'does not exist');
+            return;
         }
-        const lastTileContent = utils_1.get('.messages-wrapper .tile:last-child .content-wrapper');
-        lastTileContent.appendChild(createMessage(data));
-        if (scrollContainer) {
-            scrollDownMessagesContainer(messagesContainer);
+        renderMessage('GENERAL_CHANNEL', data);
+        roomsData[data.channel].messages.push(data);
+    });
+    socket.on('channel messages', (data) => {
+        if (!roomsData[data.channel]) {
+            console.error('Channel', data.channel, 'does not exist');
+            return;
         }
-        roomsData.GLOBAL.messages.push(data);
+        data.messages.forEach((message) => {
+            renderMessage(data.channel, message);
+            roomsData[data.channel].messages.push(message);
+        });
     });
 }
 exports.registerChatEvents = registerChatEvents;

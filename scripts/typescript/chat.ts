@@ -3,11 +3,19 @@ import { Global } from "./global";
 import { create, get } from "./utils";
 
 interface ServerMessage {
+  dbID?: string;
+  channel: string;
+  server: string;
   message: string;
   from: string;
   userID: string;
   date: string;
   timezone: string;
+};
+
+interface ChannelMessages {
+  channel: string;
+  messages: ServerMessage[];
 };
 
 interface RoomData {
@@ -17,7 +25,7 @@ interface RoomData {
 };
 
 const roomsData: RoomData = {
-  GLOBAL: {
+  GENERAL_CHANNEL: {
     messages: []
   }
 };
@@ -88,14 +96,38 @@ const createMessageTile = (data: ServerMessage): HTMLElement => {
   return tile;
 }
 
+const renderMessage = (channel: string, message: ServerMessage): void => {
+  if (!roomsData[channel]) {
+    console.error('Channel', channel, 'does not exist');
+    return;
+  }
+  const roomData = roomsData[channel];
+  const prevMessage = roomData.messages[roomData.messages.length - 1];
+  const sameUser = prevMessage && prevMessage.from === message.from;
+  const minute = 60;
+  const over5MinutesPassed = prevMessage && ((Date.now() - Number(new Date(prevMessage.date))) / 1000) > (minute * 3);
+  const shouldAddNewTile = !sameUser || over5MinutesPassed;
+  const messagesContainer = get('.messages-wrapper')!;
+  const scrollContainer = shouldScroll(messagesContainer);
+  if (shouldAddNewTile) {
+    // append a new tile
+    messagesContainer.appendChild(createMessageTile(message))
+  }
+  const lastTileContent = get('.messages-wrapper .tile:last-child .content-wrapper')!;
+  lastTileContent.appendChild(createMessage(message));
+  if (scrollContainer) {
+    scrollDownMessagesContainer(messagesContainer);
+  }
+}
+
 get('.message-input')!.addEventListener('keydown', function(this: HTMLElement, e: KeyboardEvent): void {
   if (e.code === 'Enter' && !e.shiftKey) {
     e.preventDefault();
     const self = <HTMLInputElement>this;
     const message = self.value.trim();
-    self.value = '';
     if (!message) return;
-    Global.socket!.emit('message', message);
+    self.value = '';
+    Global.socket!.emit('message', {message, channel: 'GENERAL_CHANNEL'});
   }
 });
 
@@ -120,23 +152,22 @@ export function registerChatEvents(): void {
   }
   socket.on('message', (data: ServerMessage) => {
     console.log('message', data);
-    const prevMessage = roomsData.GLOBAL.messages[roomsData.GLOBAL.messages.length - 1];
-    const sameUser = prevMessage && prevMessage.from === data.from;
-    const minute = 60;
-    const over5MinutesPassed = prevMessage && ((Date.now() - Number(new Date(prevMessage.date))) / 1000) > (minute * 3);
-    const shouldAddNewTile = !sameUser || over5MinutesPassed;
-    const wrapper = get('.messages-wrapper')!;
-    const messagesContainer = get('.messages-wrapper')!;
-    const scrollContainer = shouldScroll(messagesContainer);
-    if (shouldAddNewTile) {
-      // append a new tile
-      wrapper.appendChild(createMessageTile(data))
+    if (!roomsData[data.channel]) {
+      console.error('Channel', data.channel, 'does not exist');
+      return;
     }
-    const lastTileContent = get('.messages-wrapper .tile:last-child .content-wrapper')!;
-    lastTileContent.appendChild(createMessage(data));
-    if (scrollContainer) {
-      scrollDownMessagesContainer(messagesContainer);
+    renderMessage('GENERAL_CHANNEL', data);
+    roomsData[data.channel].messages.push(data);
+  });
+
+  socket.on('channel messages', (data: ChannelMessages) => {
+    if (!roomsData[data.channel]) {
+      console.error('Channel', data.channel, 'does not exist');
+      return;
     }
-    roomsData.GLOBAL.messages.push(data);
+    data.messages.forEach((message: ServerMessage) => {
+      renderMessage(data.channel, message);
+      roomsData[data.channel].messages.push(message);
+    });
   });
 }
