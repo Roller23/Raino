@@ -24,6 +24,8 @@ interface RoomData {
   }
 };
 
+type DateInput = Date | string | number;
+
 const roomsData: RoomData = {
   GENERAL_CHANNEL: {
     messages: []
@@ -36,9 +38,9 @@ const roomsData: RoomData = {
  * @returns string representation of the date (from now)
  */
 
-const formatDate = (date: Date | string | number, timezone: string): string => {
+const formatDate = (date: DateInput, timezone: string): string => {
   date = new Date(date);
-  const serverTime = moment.tz(date, timezone)
+  const serverTime = moment.tz(date, timezone);
   return moment.tz(serverTime, Global.timezone).calendar(null, {
     lastDay: '[Yesterday at] HH:mm',
     sameDay: '[Today at] HH:mm',
@@ -47,6 +49,12 @@ const formatDate = (date: Date | string | number, timezone: string): string => {
     nextWeek: 'Next dddd [at] HH:mm',
     sameElse: 'L'
   });
+}
+
+const formatHour = (date: DateInput, timezone: string): string => {
+  date = new Date(date);
+  const serverTime = moment.tz(date, timezone)
+  return moment.tz(serverTime, Global.timezone).format('HH:mm');
 }
 
 /**
@@ -64,7 +72,12 @@ const shouldScroll = (el: HTMLElement): boolean => {
  */
 
 const createMessage = (data: ServerMessage): HTMLElement => {
-  return create('div', {class: 'content'}, data.message);
+  const wrapper = create('div', {class: 'content-container'});
+  const date = create('div', {class: 'date'}, formatHour(data.date, data.timezone));
+  const content = create('div', {class: 'content'}, data.message);
+  content.appendChild(date);
+  wrapper.appendChild(content);
+  return wrapper;
 }
 
 /**

@@ -32,6 +32,11 @@ const formatDate = (date, timezone) => {
         sameElse: 'L'
     });
 };
+const formatHour = (date, timezone) => {
+    date = new Date(date);
+    const serverTime = moment_timezone_1.default.tz(date, timezone);
+    return moment_timezone_1.default.tz(serverTime, global_1.Global.timezone).format('HH:mm');
+};
 /**
  * @param el element to be tested
  * @returns a boolean indicating whether the element should be scrolled to bottom
@@ -44,7 +49,12 @@ const shouldScroll = (el) => {
  * @returns HTMLElement with the message
  */
 const createMessage = (data) => {
-    return utils_1.create('div', { class: 'content' }, data.message);
+    const wrapper = utils_1.create('div', { class: 'content-container' });
+    const date = utils_1.create('div', { class: 'date' }, formatHour(data.date, data.timezone));
+    const content = utils_1.create('div', { class: 'content' }, data.message);
+    content.appendChild(date);
+    wrapper.appendChild(content);
+    return wrapper;
 };
 /**
  * @param wrapper element to be scrolled down
