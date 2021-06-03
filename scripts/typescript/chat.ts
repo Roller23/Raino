@@ -142,11 +142,16 @@ get('.message-input')!.addEventListener('keydown', function(this: HTMLElement, e
   if (e.code === 'Enter' && !e.shiftKey) {
     e.preventDefault();
     const self = <HTMLInputElement>this;
-    const message = self.value.trim();
+    const message: string = self.value.trim();
     if (!message) return;
     self.value = '';
     Global.socket!.emit('message', {message, channel: 'GENERAL_CHANNEL'});
   }
+});
+
+get('#move')!.addEventListener('click', e => {
+  get('.hidden-left-panel')!.classList.toggle('visible');
+  get('.middle-panel')!.classList.toggle('moved');
 });
 
 /**

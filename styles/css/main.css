@@ -223,6 +223,7 @@
   width: 100%;
   height: calc(100% - 40px);
   display: flex;
+  overflow: hidden;
 }
 .main-screen-container .main-wrapper .left-panel, .main-screen-container .main-wrapper .middle-panel, .main-screen-container .main-wrapper .right-panel {
   height: 100%;
@@ -230,9 +231,88 @@
   position: relative;
   width: 50px;
 }
+.main-screen-container .main-wrapper .left-panel {
+  z-index: 3;
+  box-shadow: 4px 0px 10px 0px #1b1b1b;
+}
+.main-screen-container .main-wrapper .left-panel .bottom-section {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  width: 100%;
+  height: calc(50px * 2);
+  box-shadow: 0px -2px 10px 0px #1b1b1b;
+}
+.main-screen-container .main-wrapper .left-panel .bottom-section .element {
+  width: 100%;
+  height: 50px;
+  padding: 8px;
+  position: relative;
+}
+.main-screen-container .main-wrapper .left-panel .bottom-section .element .icon {
+  width: calc(100% - 10px);
+  height: calc(100% - 10px);
+  margin: 5px;
+  cursor: pointer;
+}
+.main-screen-container .main-wrapper .left-panel .bottom-section .element .avatar {
+  cursor: pointer;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+}
+.main-screen-container .main-wrapper .left-panel .bottom-section .element .status {
+  position: absolute;
+  bottom: 3px;
+  right: 3px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 3px solid #313131;
+  background-color: #2BB069;
+}
+.main-screen-container .main-wrapper .hidden-left-panel {
+  height: 100%;
+  background-color: #262626;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: calc(250px + 50px);
+  padding-left: 50px;
+  z-index: 2;
+  box-shadow: 4px 0px 10px 0px #1b1b1b;
+  transition: 0.5s;
+  transform: translateX(-100%);
+}
+.main-screen-container .main-wrapper .hidden-left-panel.visible {
+  transform: translateX(0%);
+}
+.main-screen-container .main-wrapper .hidden-left-panel .server-avatar {
+  width: 100%;
+  height: 120px;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  box-shadow: 0px 10px 5px 0px #1b1b1b;
+  background-image: url(../../images/server-placeholder.jpeg);
+}
+.main-screen-container .main-wrapper .hidden-left-panel .server-info {
+  color: white;
+  text-align: center;
+  font-size: 12px;
+  padding: 10px 10px 20px 10px;
+}
+.main-screen-container .main-wrapper .hidden-left-panel .server-info .name {
+  font-weight: 600;
+}
 .main-screen-container .main-wrapper .middle-panel {
   width: calc(100% - 50px);
   background-color: unset;
+  transition: 0.5s;
+}
+.main-screen-container .main-wrapper .middle-panel.moved {
+  padding-left: 250px;
 }
 .main-screen-container .main-wrapper .middle-panel .messages-wrapper {
   width: 100%;
@@ -243,7 +323,7 @@
   width: 100%;
   border-radius: 15px;
   overflow: hidden;
-  padding: 10px;
+  padding: 10px 20px;
 }
 .main-screen-container .main-wrapper .middle-panel .messages-wrapper .tile .avatar-wrap {
   width: 50px;
@@ -275,7 +355,7 @@
   font-size: 12px;
   color: gray;
   display: inline-block;
-  margin-left: 5px;
+  margin-left: 7px;
 }
 .main-screen-container .main-wrapper .middle-panel .messages-wrapper .tile .right .content-wrapper {
   color: #e9e9e9;
@@ -308,7 +388,7 @@
   height: 50px;
   border-radius: 15px;
   background-color: #262626;
-  padding: 10px;
+  padding: 10px 20px;
 }
 .main-screen-container .main-wrapper .middle-panel .input-wrapper .message-input {
   width: 100%;

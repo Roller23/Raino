@@ -120,6 +120,10 @@ utils_1.get('.message-input').addEventListener('keydown', function (e) {
         global_1.Global.socket.emit('message', { message, channel: 'GENERAL_CHANNEL' });
     }
 });
+utils_1.get('#move').addEventListener('click', e => {
+    utils_1.get('.hidden-left-panel').classList.toggle('visible');
+    utils_1.get('.middle-panel').classList.toggle('moved');
+});
 /**
  *
  * Registers all chat related socket events on the global socket object.
