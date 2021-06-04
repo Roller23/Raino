@@ -123,7 +123,17 @@ utils_1.get('.message-input').addEventListener('keydown', function (e) {
 utils_1.get('.current-server').addEventListener('click', e => {
     utils_1.get('.hidden-left-panel').classList.toggle('visible');
     utils_1.get('.middle-panel').classList.toggle('moved');
+    localStorage.hiddenLeftPanelVisible = utils_1.get('.hidden-left-panel').classList.contains('visible');
+    console.log(localStorage.hiddenLeftPanelVisible);
 });
+// TODO: export default localStorage values to another file
+if (!localStorage.hiddenLeftPanelVisible) {
+    localStorage.hiddenLeftPanelVisible = 'true';
+}
+if (localStorage.hiddenLeftPanelVisible === 'true') {
+    utils_1.get('.hidden-left-panel').classList.toggle('visible');
+    utils_1.get('.middle-panel').classList.toggle('moved');
+}
 /**
  *
  * Registers all chat related socket events on the global socket object.

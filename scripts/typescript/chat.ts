@@ -152,7 +152,20 @@ get('.message-input')!.addEventListener('keydown', function(this: HTMLElement, e
 get('.current-server')!.addEventListener('click', e => {
   get('.hidden-left-panel')!.classList.toggle('visible');
   get('.middle-panel')!.classList.toggle('moved');
+  localStorage.hiddenLeftPanelVisible = get('.hidden-left-panel')!.classList.contains('visible');
+  console.log(localStorage.hiddenLeftPanelVisible)
 });
+
+// TODO: export default localStorage values to another file
+
+if (!localStorage.hiddenLeftPanelVisible) {
+  localStorage.hiddenLeftPanelVisible = 'true';
+}
+
+if (localStorage.hiddenLeftPanelVisible === 'true') {
+  get('.hidden-left-panel')!.classList.toggle('visible');
+  get('.middle-panel')!.classList.toggle('moved');
+}
 
 /**
  * 
