@@ -3,7 +3,7 @@
  * Global utility functions
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.create = exports.fadeOut = exports.sleep = exports.authSocket = exports.validEmail = exports.parseJson = exports.request = exports.onAll = exports.on = exports.getAll = exports.get = void 0;
+exports.getElementOffset = exports.create = exports.fadeOut = exports.sleep = exports.authSocket = exports.validEmail = exports.parseJson = exports.request = exports.onAll = exports.on = exports.getAll = exports.get = void 0;
 const global_1 = require("./global");
 function get(selector) {
     return document.querySelector(selector);
@@ -95,3 +95,21 @@ function create(tag, attrs = {}, text = '') {
     return res;
 }
 exports.create = create;
+/**
+ * Returns an element's position relative to the whole document (page).
+ *
+ * If the element does not exist, returns O/O (top-left window corner).
+ *
+ * @example getOffset(document.getElementById('#element'));
+ *
+ * @param el
+ * @see https://stackoverflow.com/a/28222246/2391795
+ */
+const getElementOffset = (el) => {
+    const rect = el.getBoundingClientRect();
+    return {
+        left: rect.left + window.scrollX + el.offsetWidth,
+        top: rect.top + window.scrollY + Math.floor(el.offsetHeight / 2),
+    };
+};
+exports.getElementOffset = getElementOffset;

@@ -149,7 +149,7 @@ get('.message-input')!.addEventListener('keydown', function(this: HTMLElement, e
   }
 });
 
-get('#move')!.addEventListener('click', e => {
+get('.current-server')!.addEventListener('click', e => {
   get('.hidden-left-panel')!.classList.toggle('visible');
   get('.middle-panel')!.classList.toggle('moved');
 });

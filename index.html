@@ -39,16 +39,34 @@
         </div>
       </div>
       <div class="left-panel">
-        <button type="button" id="logout">Log out</button>
-        <button type="button" id="move">Move</button>
+        <div class="top-section">
+          <div class="element">
+            <img src="images/server-placeholder.jpeg"
+              alt="Current server"
+              class="current-server"
+              tooltip="DOMOPEDYCZNA RADA">
+          </div>
+          <div class="element">
+            <img src="images/buttons/servers.png" alt="Servers" class="icon selectable" tooltip="Servers">
+          </div>
+          <div class="element">
+            <img src="images/buttons/catchup.png" alt="Catchup" class="icon selectable" tooltip="Catchup">
+          </div>
+          <div class="element">
+            <img src="images/buttons/mentions.png" alt="Mentions" class="icon selectable" tooltip="Mentions">
+          </div>
+          <div class="element">
+            <img src="images/buttons/dm.png" alt="Direct messages" class="icon selectable" tooltip="Direct Messages">
+          </div>
+        </div>
 
         <div class="bottom-section">
           <div class="element">
-            <img src="images/server-placeholder.jpeg" alt="User avatar" class="avatar">
+            <img src="images/server-placeholder.jpeg" alt="User avatar" class="avatar" tooltip="Change status">
             <div class="status"></div>
           </div>
           <div class="element">
-            <img src="images/settings-icon.png" alt="Settings" class="icon" id="user-settings-btn">
+            <img src="images/buttons/settings.png" alt="Settings" class="icon" id="user-settings-btn" tooltip="Settings">
           </div>
         </div>
       </div>
@@ -58,7 +76,9 @@
           <textarea class="message-input" placeholder="Send a message..."></textarea>
         </div>
       </div>
-      <div class="right-panel"></div>
+      <div class="right-panel">
+        <button type="button" id="logout">Log out</button>
+      </div>
     </div>
   </div>
 
@@ -111,6 +131,7 @@
     require('./scripts/javascript/titlebar.js');
     require('./scripts/javascript/login.js');
     require('./scripts/javascript/chat.js');
+    require('./scripts/javascript/tooltip.js');
   </script>
 </body>
 </html>

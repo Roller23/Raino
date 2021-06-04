@@ -38,11 +38,44 @@
       width: $sidePanelsWidth;
     }
     .left-panel {
+      $elementSize: 50px;
+
       z-index: 3;
       box-shadow: 4px 0px 10px 0px $shadowColor;
-      .bottom-section {
-        $elementSize: 50px;
+      padding-bottom: calc(#{$elementSize} * 2);
+      .top-section {
+        width: 100%;
+        box-shadow: 0px 2px 10px 0px $shadowColor;
 
+        .element {
+          width: 100%;
+          height: $elementSize;
+          padding: 8px;
+          text-align: center;
+
+          .icon {
+            max-width: calc(100% - 10px);
+            max-height: calc(100% - 10px);
+            margin: 5px;
+            cursor: pointer;
+            display: inline-block;
+
+            &.selectable:hover {
+              // TODO: might want to convert these to SVGs
+              filter: brightness(0%) invert(1);
+            }
+          }
+
+          .current-server {
+            cursor: pointer;
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+            border-radius: 6px;
+          }
+        }
+      }
+      .bottom-section {
         position: absolute;
         bottom: 0px;
         left: 0px;
@@ -117,11 +150,15 @@
         .name {
           font-weight: 600;
         }
+        .info {
+          font-weight: lighter;
+          margin-top: 5px;
+        }
       }
     }
     .middle-panel {
       $inputWrapperHeight: 50px;
-      width: calc(100% - #{$sidePanelsWidth});
+      width: calc(100% - (#{$sidePanelsWidth} * 2));
       background-color: unset;
       transition: $hiddenPanelTransition;
 
