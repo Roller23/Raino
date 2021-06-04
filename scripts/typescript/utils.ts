@@ -104,8 +104,6 @@ export type ElementOffset = {
 /**
  * Returns an element's position relative to the whole document (page).
  *
- * If the element does not exist, returns O/O (top-left window corner).
- *
  * @example getOffset(document.getElementById('#element'));
  *
  * @param el

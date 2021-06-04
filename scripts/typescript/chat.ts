@@ -96,7 +96,7 @@ const scrollDownMessagesContainer = (wrapper: HTMLElement): void => {
 const createMessageTile = (data: ServerMessage): HTMLElement => {
   const tile = create('div', {class: 'tile'});
   const avatarWrap = create('div', {class: 'avatar-wrap'});
-  avatarWrap.appendChild(create('img', {src: 'https://cdn.discordapp.com/avatars/310875718651346945/1c9539f3583ff0770c37a31382d9f5c1.png'}));
+  avatarWrap.appendChild(create('img', {src: 'images/user-placeholder.png'}));
   tile.appendChild(avatarWrap);
   const right = create('div', {class: 'right'});
   const top = create('div', {class: 'top'});
