@@ -267,8 +267,8 @@
   position: relative;
 }
 .main-screen-container .main-wrapper .left-panel .top-section .element .icon {
-  max-width: calc(100% - 10px - 16px);
-  max-height: calc(100% - 10px - 16px);
+  max-width: calc(100% - 10px - calc(16px));
+  max-height: calc(100% - 10px - calc(16px));
   cursor: pointer;
   display: block;
   position: absolute;
