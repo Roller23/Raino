@@ -264,13 +264,17 @@
   height: 50px;
   padding: 8px;
   text-align: center;
+  position: relative;
 }
 .main-screen-container .main-wrapper .left-panel .top-section .element .icon {
-  max-width: calc(100% - 10px);
-  max-height: calc(100% - 10px);
-  margin: 5px;
+  max-width: calc(100% - 10px - 16px);
+  max-height: calc(100% - 10px - 16px);
   cursor: pointer;
-  display: inline-block;
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 .main-screen-container .main-wrapper .left-panel .top-section .element .icon.selectable:hover {
   filter: brightness(0%) invert(1);
