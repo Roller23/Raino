@@ -138,6 +138,16 @@ const renderMessage = (channel: string, message: ServerMessage): void => {
   }
 }
 
+const showLeftPanel = (): void => {
+  get('.hidden-left-panel')!.classList.add('visible');
+  get('.middle-panel')!.classList.add('moved');
+};
+
+const toggleLeftPanel = (): void => {
+  get('.hidden-left-panel')!.classList.toggle('visible');
+  get('.middle-panel')!.classList.toggle('moved');
+};
+
 get('.message-input')!.addEventListener('keydown', function(this: HTMLElement, e: KeyboardEvent): void {
   if (e.code === 'Enter' && !e.shiftKey) {
     e.preventDefault();
@@ -150,8 +160,7 @@ get('.message-input')!.addEventListener('keydown', function(this: HTMLElement, e
 });
 
 get('.current-server')!.addEventListener('click', e => {
-  get('.hidden-left-panel')!.classList.toggle('visible');
-  get('.middle-panel')!.classList.toggle('moved');
+  toggleLeftPanel();
   localStorage.hiddenLeftPanelVisible = get('.hidden-left-panel')!.classList.contains('visible');
   console.log(localStorage.hiddenLeftPanelVisible)
 });
@@ -163,8 +172,7 @@ if (!localStorage.hiddenLeftPanelVisible) {
 }
 
 if (localStorage.hiddenLeftPanelVisible === 'true') {
-  get('.hidden-left-panel')!.classList.toggle('visible');
-  get('.middle-panel')!.classList.toggle('moved');
+  showLeftPanel();
 }
 
 /**
