@@ -3,13 +3,29 @@
  * Global utility functions
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authSocket = exports.validEmail = exports.parseJson = exports.request = exports.get = void 0;
+exports.getElementOffset = exports.create = exports.fadeOut = exports.sleep = exports.authSocket = exports.validEmail = exports.parseJson = exports.request = exports.onAll = exports.on = exports.getAll = exports.get = void 0;
 const global_1 = require("./global");
 function get(selector) {
     return document.querySelector(selector);
 }
 exports.get = get;
-async function request(method, url, data) {
+function getAll(selector) {
+    return document.querySelectorAll(selector);
+}
+exports.getAll = getAll;
+function on(el, e, callback) {
+    const element = typeof el === 'string' ? get(el) : el;
+    element.addEventListener(e, callback);
+    return element;
+}
+exports.on = on;
+function onAll(el, e, callback) {
+    const elements = typeof el === 'string' ? getAll(el) : el;
+    elements.forEach(element => on(element, e, callback));
+    return elements;
+}
+exports.onAll = onAll;
+async function request(method, url, data = {}) {
     const options = {
         headers: {
             'Content-Type': 'application/json'
@@ -48,3 +64,50 @@ function authSocket() {
     });
 }
 exports.authSocket = authSocket;
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+exports.sleep = sleep;
+function fadeOut(el, ms) {
+    return new Promise(resolve => {
+        const oldTransition = el.style.transition;
+        const callback = () => {
+            el.style.transition = oldTransition;
+            el.style.display = 'none';
+            el.removeEventListener('transitionend', callback);
+            resolve();
+        };
+        el.addEventListener('transitionend', callback);
+        el.style.opacity = '1';
+        el.style.transition = `opacity ${ms}ms`;
+        el.style.opacity = '0';
+    });
+}
+exports.fadeOut = fadeOut;
+function create(tag, attrs = {}, text = '') {
+    const res = document.createElement(tag);
+    Object.keys(attrs).forEach(key => {
+        res.setAttribute(key, attrs[key]);
+    });
+    if (text) {
+        res.innerText = text;
+    }
+    return res;
+}
+exports.create = create;
+/**
+ * Returns an element's position relative to the whole document (page).
+ *
+ * @example getOffset(document.getElementById('#element'));
+ *
+ * @param el
+ * @see https://stackoverflow.com/a/28222246/2391795
+ */
+const getElementOffset = (el) => {
+    const rect = el.getBoundingClientRect();
+    return {
+        left: rect.left + window.scrollX + el.offsetWidth,
+        top: rect.top + window.scrollY + Math.floor(el.offsetHeight / 2),
+    };
+};
+exports.getElementOffset = getElementOffset;

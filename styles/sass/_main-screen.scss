@@ -1,0 +1,407 @@
+.main-screen-container {
+  $topBarHeight: 40px;
+
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  .top-bar {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: $topBarHeight;
+    background-color: $lightGray;
+    -webkit-app-region: drag;
+    user-select: none;
+  }
+
+  .main-wrapper {
+    $panelRadius: 15px;
+    $sidePanelsWidth: 50px;
+    $hiddenPanelWidth: 250px;
+    $hiddenPanelTransition: 0.5s;
+    $inputMessagesPaddingLeft: 20px;
+
+    position: absolute;
+    top: $topBarHeight;
+    left: 0px;
+    width: 100%;
+    height: calc(100% - #{$topBarHeight});
+    display: flex;
+    overflow: hidden; // Might cause issues later on, used to hide shadows, TODO!
+    .left-panel, .middle-panel, .right-panel {
+      height: 100%;
+      background-color: $lightGray;
+      position: relative;
+      width: $sidePanelsWidth;
+    }
+    .left-panel {
+      $elementSize: 50px;
+
+      z-index: 3;
+      box-shadow: 4px 0px 10px 0px $shadowColor;
+      padding-bottom: calc(#{$elementSize} * 2);
+      .top-section {
+        width: 100%;
+        box-shadow: 0px 2px 10px 0px $shadowColor;
+
+        .element {
+          $elementPadding: 8px;
+
+          width: 100%;
+          height: $elementSize;
+          padding: $elementPadding;
+          text-align: center;
+          position: relative;
+
+          .icon {
+            max-width: calc(100% - 10px - calc(#{$elementPadding * 2}));
+            max-height: calc(100% - 10px - calc(#{$elementPadding * 2}));
+            cursor: pointer;
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+            &.selectable:hover {
+              // TODO: might want to convert these to SVGs
+              filter: brightness(0%) invert(1);
+            }
+          }
+
+          .current-server {
+            cursor: pointer;
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+            border-radius: 6px;
+          }
+        }
+      }
+
+      .middle-section {
+        height: calc(100% - 5 * #{$elementSize});
+        width: 100%;
+        overflow-y: auto;
+        &::-webkit-scrollbar {
+          display: none;
+        }
+        .element {
+          $elementPadding: 12px;
+
+          width: 100%;
+          height: $elementSize;
+          padding: $elementPadding;
+          position: relative;
+
+          .server {
+            cursor: pointer;
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+            border-radius: 6px;
+          }
+        }
+      }
+
+      .bottom-section {
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
+        width: 100%;
+        height: calc(#{$elementSize} * 2);
+        box-shadow: 0px -2px 10px 0px $shadowColor;
+        .element {
+          width: 100%;
+          height: $elementSize;
+          padding: 8px;
+          position: relative;
+
+          .icon {
+            width: calc(100% - 10px);
+            height: calc(100% - 10px);
+            margin: 5px;
+            cursor: pointer;
+          }
+
+          .avatar {
+            cursor: pointer;
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+            border-radius: 6px;
+          }
+
+          .status {
+            position: absolute;
+            bottom: 3px;
+            right: 3px;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            border: 3px solid $lightGray;
+            background-color: $statusOnline;
+          }
+        }
+      }
+    }
+    .hidden-left-panel {
+      height: 100%;
+      background-color: $gray;
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      width: calc(#{$hiddenPanelWidth} + #{$sidePanelsWidth});
+      padding-left: $sidePanelsWidth;
+      z-index: 2;
+      box-shadow: 4px 0px 10px 0px $shadowColor;
+      transition: $hiddenPanelTransition;
+      transform: translateX(-100%);
+      overflow-y: auto;
+      &.visible {
+        transform: translateX(0%);
+      }
+
+      .server-avatar {
+        width: 100%;
+        height: 120px;
+        background-position: center center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        box-shadow: 0px 10px 5px 0px $shadowColor;
+        background-image: url(../../images/server-placeholder.jpeg);
+      }
+
+      .server-info {
+        color: white;
+        text-align: center;
+        font-size: 12px;
+        padding: 10px 10px 20px 10px;
+        .name {
+          font-weight: 600;
+        }
+        .info {
+          font-weight: lighter;
+          margin-top: 5px;
+        }
+      }
+
+      .channels-wrap {
+        color: $textGray;
+        padding: 5px 10px;
+
+        .section-name {
+          font-size: 14px;
+        }
+
+        .channels {
+          padding: 10px 0px;
+        }
+
+        .channel {
+          cursor: pointer;
+          font-size: 14px;
+          transition: 0.2s;
+          padding: 3px;
+          border-radius: 5px;
+          margin-bottom: 2px;
+          .icon {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            background-color: $textGray;
+            -webkit-mask: url(../../images/friends-icon.svg) no-repeat center;
+            mask: url(../../images/friends-icon.svg) no-repeat center;
+            margin-right: 2px;
+            transition: 0.2s;
+            transform: translateY(-1px);
+          }
+          .name {
+            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: calc(100% - 26px);
+          }
+
+          &.selected {
+            background-color: rgba(white, 0.1);
+            .name {
+              color: white;
+              font-weight: bold;
+            }
+            .icon {
+              background-color: white;
+            }
+          }
+        }
+        .voice-channels {
+          .icon {
+            -webkit-mask: url(../../images/mic-icon.svg) no-repeat center;
+            mask: url(../../images/mic-icon.svg) no-repeat center;
+          }
+          .channel {
+            &.selected {
+              background-color: transparent;
+            }
+          }
+          .channel-wrap {
+            .user {
+              $avatarBorder: 2px;
+
+              margin-bottom: 8px;
+              cursor: pointer;
+              .avatar {
+                display: inline-block;
+                width: calc(18px + 2 * #{$avatarBorder});
+                height: calc(18px + 2 * #{$avatarBorder});
+                border-radius: 5px;
+                background-position: center center;
+                background-size: cover;
+                background-repeat: no-repeat;
+                margin-right: 5px;
+                vertical-align: middle;
+                border: $avatarBorder solid $gray;
+              }
+
+              &.speaking {
+                .nick {
+                  color: $speakingColor;
+                }
+                .avatar {
+                  border: $avatarBorder solid $speakingColor;
+                }
+              }
+            }
+            .users {
+              padding-left: 23px;
+            }
+            .nick {
+              font-size: 14px;
+              color: white;
+              display: inline-block;
+            }
+          }
+        }
+      }
+
+    }
+    .middle-panel {
+      $inputWrapperHeight: 50px;
+      width: calc(100% - (#{$sidePanelsWidth} * 2));
+      background-color: unset;
+      transition: $hiddenPanelTransition;
+      position: relative;
+
+      &.moved {
+        padding-left: $hiddenPanelWidth;
+      }
+
+      .tabs-wrapper {
+
+      }
+
+      .messages-wrapper {
+        width: 100%;
+        height: calc(100% - #{$inputWrapperHeight});
+        overflow-y: auto;
+
+        .tile {
+          $avatarSize: 50px;
+          width: 100%;
+          border-radius: 15px;
+          overflow: hidden;
+          padding: 10px $inputMessagesPaddingLeft;
+          .avatar-wrap {
+            width: $avatarSize;
+            height: $avatarSize;
+            display: inline-block;
+            img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              border-radius: 15px;
+            }
+          }
+
+          .right {
+            width: calc(100% - #{$avatarSize});
+            padding-left: 10px;
+            display: inline-block;
+            vertical-align: top;
+            .top {
+              width: 100%;
+              .nick {
+                color: wheat;
+                font-weight: bold;
+                font-size: 14px;
+                display: inline-block;
+              }
+              .time {
+                font-size: 12px;
+                color: gray;
+                display: inline-block;
+                margin-left: 7px;
+              }
+            }
+
+            .content-wrapper {
+              color: rgb(233, 233, 233);
+              word-break: break-word;
+              white-space: pre-wrap;
+
+              .content-container {
+                position: relative;
+
+                .date {
+                  position: absolute;
+                  top: 0px;
+                  left: -35px;
+                  font-size: 12px;
+                  color: rgb(155, 155, 155);
+                  overflow: hidden;
+                  white-space: nowrap;
+                  height: 100%;
+                  display: flex;
+                  align-items: center;
+                  transition: 0.2s;
+                  opacity: 0;
+                }
+
+                &:nth-child(n + 3):hover {
+                  .date {
+                    opacity: 1;
+                    left: -40px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      .input-wrapper {
+        width: 100%;
+        height: $inputWrapperHeight;
+        border-radius: $panelRadius;
+        background-color: $gray;
+        padding: 10px $inputMessagesPaddingLeft;
+        .message-input {
+          width: 100%;
+          height: 100%;
+          background-color: $lighterGray;
+          border: 0px;
+          border-radius: calc(#{$panelRadius} - 5px);
+          outline: none;
+          padding: 0px 10px;
+          padding-top: 7px;
+          color: rgb(216, 216, 216);
+          resize: none;
+          font-family: 'Inter', sans-serif;
+        }
+      }
+    }
+  }
+}

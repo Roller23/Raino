@@ -1,12 +1,50 @@
 import io from 'socket.io-client';
+import { registerChatEvents } from './chat';
 import { Global } from './global';
-import { authSocket, get, parseJson, request, validEmail } from './utils'
+import { authSocket, fadeOut, get, getAll, parseJson, request, validEmail } from './utils'
+import * as fs from 'fs'
 
 (async () => {
+
+  // set a random splashscreen
+  const splashScreens: string[] = fs.readdirSync('./splash_screens/');
+  const splashScreen: string = splashScreens[Math.floor(Math.random() * splashScreens.length)];
+  get('.login-container')!.style.backgroundImage = `url(./splash_screens/${splashScreen})`;
+
+  const remote = require('electron').remote;
+  const win = remote.getCurrentWindow();
 
   const getI = (s: string) => <HTMLInputElement>get(s);
   
   let loggingIn: boolean = true;
+  let authInProgress: boolean = false;
+  let registerInProgress: boolean = false;
+
+  const button = get('#send-login-form')!;
+  const buttonText = button.querySelector<HTMLElement>('.text')!;
+  let oldButtonText = buttonText.innerText;
+
+  showInputs();
+
+  if (localStorage.token && localStorage.tokenSelector) {
+    hideInputs();
+    console.log('signing in with token')
+    Global.token = localStorage.token;
+    Global.tokenSelector = localStorage.tokenSelector;
+    buttonText.innerText = 'Authorizing...';
+    initSocketAuth();
+  }
+
+  function showInputs() {
+    authInProgress = false;
+    const wrap = get('.login-container .input-wrapper')!;
+    wrap.style.height = `${wrap.scrollHeight}px`;
+  }
+
+  function hideInputs() {
+    authInProgress = true;
+    get('.login-container .input-wrapper')!.style.height = '0px';
+  }
 
   function toggleForm(self: HTMLElement): void {
     const wrapper = get('.form-nickname-wrapper')!;
@@ -14,6 +52,7 @@ import { authSocket, get, parseJson, request, validEmail } from './utils'
     const swapUp = get('.swap-wrap .up')!;
     loggingIn = !loggingIn;
     if (!loggingIn) {
+      get('.login-container .input-wrapper')!.style.height = 'auto';
       wrapper.style.height = wrapper.scrollHeight + 'px';
       swapIn.style.height = '0%';
       swapUp.style.opacity = '1';
@@ -26,15 +65,42 @@ import { authSocket, get, parseJson, request, validEmail } from './utils'
     self.innerText = 'sign up';
   }
 
+  function initSocketAuth() {
+    hideInputs();
+    Global.socket = io('https://raino-backend.glitch.me');
+    Global.socket.on('connected', () => {
+      authSocket();
+    });
+    Global.socket.on('authenticated', async () => {
+      registerChatEvents();
+      buttonText.innerText = 'Success!';
+      await fadeOut(get('.login-container')!, 400);
+      // win.setFullScreen(true); TODO
+    });
+    Global.socket.on('auth denied', () => {
+      // TODO: get a new token
+      showInputs();
+      buttonText.innerText = 'Continue';
+      alert('Could not sign in! Try again');
+    });
+  }
+
   async function register() {
+    if (authInProgress || registerInProgress) return;
     const email: string = getI('#form-email').value.trim();
     const password: string = getI('#form-password').value;
     const nickname: string = getI('#form-nickname').value.trim();
+    if (!email) {
+      return alert('Email cannot be empty');
+    }
     if (!validEmail(email)) {
       return alert('Invalid email address');
     }
-    if (password.length < 3 || password.length > 100) {
-      return alert('Password too long or short');
+    if (password.length < 3) {
+      return alert('Password too short');
+    }
+    if (password.length > 100) {
+      return alert('Password too long');
     }
     if (!nickname) {
       return alert('Nickname cannot be empty');
@@ -42,11 +108,15 @@ import { authSocket, get, parseJson, request, validEmail } from './utils'
     if (nickname.length > 20) {
       return alert('Nickname can be maximum 20 characters');
     }
+    buttonText.innerText = 'Registering...';
+    registerInProgress = true;
     const data = {email, password, nickname};
     const url = 'https://raino-backend.glitch.me/register/';
     const json = await request('POST', url, data);
     const res = parseJson(json);
-    if (typeof res !== 'object') {
+    registerInProgress = false;
+    buttonText.innerText = 'Continue';
+    if (res === null) {
       return alert('Server error!');
     }
     if (!res.success) {
@@ -58,25 +128,41 @@ import { authSocket, get, parseJson, request, validEmail } from './utils'
   }
 
   async function login() {
+    if (authInProgress || registerInProgress) return;
     const email: string = getI('#form-email').value.trim();
     const password: string = getI('#form-password').value;
+    if (!email) {
+      return alert('Email cannot be empty');
+    }
+    if (!password) {
+      return alert('Password cannot be empty');
+    }
     if (!validEmail(email)) {
       return alert('Invalid email address');
     }
     if (password.length < 3 || password.length > 100) {
       return alert('Password too long or short');
     }
+    hideInputs();
+    buttonText.innerText = 'Signing in...';
     const data = {email, password};
     const url = 'https://raino-backend.glitch.me/login/';
     const json = await request('POST', url, data);
     const res = parseJson(json);
     if (res === null) {
+      buttonText.innerText = 'Continue';
+      showInputs();
       return alert('Server error!');
     }
     if (!res.success) {
+      buttonText.innerText = 'Continue';
+      showInputs();
       // TODO: convert msg to something more friendly
       return alert(res.msg);
     }
+    buttonText.innerText = 'Authorizing...';
+    localStorage.token = res.token;
+    localStorage.tokenSelector = res.selector;
     Global.token = res.token;
     Global.tokenSelector = res.selector;
     if (Global.socket && Global.socket.connected) {
@@ -85,19 +171,7 @@ import { authSocket, get, parseJson, request, validEmail } from './utils'
     if (Global.socket) {
       Global.socket.disconnect();
     }
-    Global.socket = io('https://raino-backend.glitch.me');
-    Global.socket.on('connected', () => {
-      authSocket();
-    });
-    Global.socket.on('authenticated', () => {
-      console.log('yay auth successful')
-      // TODO: close the login page and display chat
-    });
-    Global.socket.on('auth denied', () => {
-      // TODO: get a new token
-      console.log('auth denied');
-    });
-    alert('Success!\n...\nwhat now');
+    initSocketAuth();
   }
 
   get('#signup-btn')!.addEventListener('click', function(this: HTMLElement, e: Event): void {
@@ -109,6 +183,33 @@ import { authSocket, get, parseJson, request, validEmail } from './utils'
       return register();
     }
     login();
+  });
+
+  getAll('#form-email, #form-password').forEach(input => {
+    input.addEventListener('keyup', e => {
+      if (e.code !== 'Enter') return;
+      login();
+    });
+  });
+
+  get('#logout')!.addEventListener('click', async e => {
+    Global.token = null;
+    Global.tokenSelector = null;
+    localStorage.removeItem('token');
+    localStorage.removeItem('tokenSelector');
+    // await request('POST', 'https://raino-backend.glitch.me/logout/');
+    window.location.reload();
+  });
+
+  button.addEventListener('mouseenter', function(this: HTMLElement, e: Event) {
+    if (registerInProgress || authInProgress) return;
+    oldButtonText = buttonText.innerText;
+    buttonText.innerText = 'To infinity and beyond!';
+  });
+
+  button.addEventListener('mouseleave', function(this: HTMLElement, e: Event) {
+    if (registerInProgress || authInProgress) return;
+    buttonText.innerText = oldButtonText;
   });
 
 })();
