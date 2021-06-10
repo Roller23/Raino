@@ -140,11 +140,8 @@ if (localStorage.hiddenLeftPanelVisible === 'true') {
     showLeftPanel();
 }
 /**
- *
  * Registers all chat related socket events on the global socket object.
  * Should only be called after successfully authenticating the socket
- *
- * @returns void
  */
 function registerChatEvents() {
     if (global_1.Global.socket === null) {
@@ -163,7 +160,7 @@ function registerChatEvents() {
             console.error('Channel', data.channel, 'does not exist');
             return;
         }
-        renderMessage('GENERAL_CHANNEL', data);
+        renderMessage(data.channel, data);
         roomsData[data.channel].messages.push(data);
     });
     socket.on('channel messages', (data) => {
