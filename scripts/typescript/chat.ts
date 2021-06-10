@@ -162,7 +162,6 @@ get('.message-input')!.addEventListener('keydown', function(this: HTMLElement, e
 get('.current-server')!.addEventListener('click', e => {
   toggleLeftPanel();
   localStorage.hiddenLeftPanelVisible = get('.hidden-left-panel')!.classList.contains('visible');
-  console.log(localStorage.hiddenLeftPanelVisible)
 });
 
 // TODO: export default localStorage values to another file

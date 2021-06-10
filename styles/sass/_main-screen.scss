@@ -134,6 +134,7 @@
       box-shadow: 4px 0px 10px 0px $shadowColor;
       transition: $hiddenPanelTransition;
       transform: translateX(-100%);
+      overflow-y: auto;
       &.visible {
         transform: translateX(0%);
       }
@@ -161,6 +162,106 @@
           margin-top: 5px;
         }
       }
+
+      .channels-wrap {
+        color: $textGray;
+        padding: 5px 10px;
+
+        .section-name {
+          font-size: 14px;
+        }
+
+        .channels {
+          padding: 10px 0px;
+        }
+
+        .channel {
+          cursor: pointer;
+          font-size: 14px;
+          transition: 0.2s;
+          padding: 3px;
+          border-radius: 5px;
+          margin-bottom: 2px;
+          .icon {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            background-color: $textGray;
+            -webkit-mask: url(../../images/friends-icon.svg) no-repeat center;
+            mask: url(../../images/friends-icon.svg) no-repeat center;
+            margin-right: 2px;
+            transition: 0.2s;
+            transform: translateY(-1px);
+          }
+          .name {
+            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: calc(100% - 26px);
+          }
+
+          &.selected {
+            background-color: rgba(white, 0.1);
+            .name {
+              color: white;
+              font-weight: bold;
+            }
+            .icon {
+              background-color: white;
+            }
+          }
+        }
+        .voice-channels {
+          .icon {
+            -webkit-mask: url(../../images/mic-icon.svg) no-repeat center;
+            mask: url(../../images/mic-icon.svg) no-repeat center;
+          }
+          .channel {
+            &.selected {
+              background-color: transparent;
+            }
+          }
+          .channel-wrap {
+            .user {
+              $avatarBorder: 2px;
+
+              margin-bottom: 8px;
+              cursor: pointer;
+              .avatar {
+                display: inline-block;
+                width: calc(18px + 2 * #{$avatarBorder});
+                height: calc(18px + 2 * #{$avatarBorder});
+                border-radius: 5px;
+                background-position: center center;
+                background-size: cover;
+                background-repeat: no-repeat;
+                margin-right: 5px;
+                vertical-align: middle;
+                border: $avatarBorder solid $gray;
+              }
+
+              &.speaking {
+                .nick {
+                  color: $speakingColor;
+                }
+                .avatar {
+                  border: $avatarBorder solid $speakingColor;
+                }
+              }
+            }
+            .users {
+              padding-left: 23px;
+            }
+            .nick {
+              font-size: 14px;
+              color: white;
+              display: inline-block;
+            }
+          }
+        }
+      }
+
     }
     .middle-panel {
       $inputWrapperHeight: 50px;

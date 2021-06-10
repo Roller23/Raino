@@ -335,6 +335,7 @@
   box-shadow: 4px 0px 10px 0px #1b1b1b;
   transition: 0.5s;
   transform: translateX(-100%);
+  overflow-y: auto;
 }
 .main-screen-container .main-wrapper .hidden-left-panel.visible {
   transform: translateX(0%);
@@ -360,6 +361,89 @@
 .main-screen-container .main-wrapper .hidden-left-panel .server-info .info {
   font-weight: lighter;
   margin-top: 5px;
+}
+.main-screen-container .main-wrapper .hidden-left-panel .channels-wrap {
+  color: #AFAFAF;
+  padding: 5px 10px;
+}
+.main-screen-container .main-wrapper .hidden-left-panel .channels-wrap .section-name {
+  font-size: 14px;
+}
+.main-screen-container .main-wrapper .hidden-left-panel .channels-wrap .channels {
+  padding: 10px 0px;
+}
+.main-screen-container .main-wrapper .hidden-left-panel .channels-wrap .channel {
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s;
+  padding: 3px;
+  border-radius: 5px;
+  margin-bottom: 2px;
+}
+.main-screen-container .main-wrapper .hidden-left-panel .channels-wrap .channel .icon {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  background-color: #AFAFAF;
+  -webkit-mask: url(../../images/friends-icon.svg) no-repeat center;
+  mask: url(../../images/friends-icon.svg) no-repeat center;
+  margin-right: 2px;
+  transition: 0.2s;
+  transform: translateY(-1px);
+}
+.main-screen-container .main-wrapper .hidden-left-panel .channels-wrap .channel .name {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: calc(100% - 26px);
+}
+.main-screen-container .main-wrapper .hidden-left-panel .channels-wrap .channel.selected {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+.main-screen-container .main-wrapper .hidden-left-panel .channels-wrap .channel.selected .name {
+  color: white;
+  font-weight: bold;
+}
+.main-screen-container .main-wrapper .hidden-left-panel .channels-wrap .channel.selected .icon {
+  background-color: white;
+}
+.main-screen-container .main-wrapper .hidden-left-panel .channels-wrap .voice-channels .icon {
+  -webkit-mask: url(../../images/mic-icon.svg) no-repeat center;
+  mask: url(../../images/mic-icon.svg) no-repeat center;
+}
+.main-screen-container .main-wrapper .hidden-left-panel .channels-wrap .voice-channels .channel.selected {
+  background-color: transparent;
+}
+.main-screen-container .main-wrapper .hidden-left-panel .channels-wrap .voice-channels .channel-wrap .user {
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+.main-screen-container .main-wrapper .hidden-left-panel .channels-wrap .voice-channels .channel-wrap .user .avatar {
+  display: inline-block;
+  width: calc(18px + 2 * 2px);
+  height: calc(18px + 2 * 2px);
+  border-radius: 5px;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin-right: 5px;
+  vertical-align: middle;
+  border: 2px solid #262626;
+}
+.main-screen-container .main-wrapper .hidden-left-panel .channels-wrap .voice-channels .channel-wrap .user.speaking .nick {
+  color: #69D795;
+}
+.main-screen-container .main-wrapper .hidden-left-panel .channels-wrap .voice-channels .channel-wrap .user.speaking .avatar {
+  border: 2px solid #69D795;
+}
+.main-screen-container .main-wrapper .hidden-left-panel .channels-wrap .voice-channels .channel-wrap .users {
+  padding-left: 23px;
+}
+.main-screen-container .main-wrapper .hidden-left-panel .channels-wrap .voice-channels .channel-wrap .nick {
+  font-size: 14px;
+  color: white;
+  display: inline-block;
 }
 .main-screen-container .main-wrapper .middle-panel {
   width: calc(100% - (50px * 2));
