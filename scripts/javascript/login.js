@@ -93,7 +93,7 @@ const fs = __importStar(require("fs"));
             // TODO: get a new token
             showInputs();
             buttonText.innerText = 'Continue';
-            alert('Could not sign in! Try again');
+            utils_1.popup('Could not sign in! Try again');
         });
     }
     async function register() {
@@ -103,22 +103,22 @@ const fs = __importStar(require("fs"));
         const password = getI('#form-password').value;
         const nickname = getI('#form-nickname').value.trim();
         if (!email) {
-            return alert('Email cannot be empty');
+            return utils_1.popup('Email cannot be empty');
         }
         if (!utils_1.validEmail(email)) {
-            return alert('Invalid email address');
+            return utils_1.popup('Invalid email address');
         }
         if (password.length < 3) {
-            return alert('Password too short');
+            return utils_1.popup('Password too short');
         }
         if (password.length > 100) {
-            return alert('Password too long');
+            return utils_1.popup('Password too long');
         }
         if (!nickname) {
-            return alert('Nickname cannot be empty');
+            return utils_1.popup('Nickname cannot be empty');
         }
         if (nickname.length > 20) {
-            return alert('Nickname can be maximum 20 characters');
+            return utils_1.popup('Nickname can be maximum 20 characters');
         }
         buttonText.innerText = 'Registering...';
         registerInProgress = true;
@@ -129,13 +129,13 @@ const fs = __importStar(require("fs"));
         registerInProgress = false;
         buttonText.innerText = 'Continue';
         if (res === null) {
-            return alert('Server error!');
+            return utils_1.popup('Server error!');
         }
         if (!res.success) {
             // TODO: convert msg to something more friendly
-            return alert(res.msg);
+            return utils_1.popup(res.msg);
         }
-        alert('Success! You can now sign in');
+        utils_1.popup('Success! You can now sign in');
         toggleForm(utils_1.get('#signup-btn'));
     }
     async function login() {
@@ -144,16 +144,16 @@ const fs = __importStar(require("fs"));
         const email = getI('#form-email').value.trim();
         const password = getI('#form-password').value;
         if (!email) {
-            return alert('Email cannot be empty');
+            return utils_1.popup('Email cannot be empty');
         }
         if (!password) {
-            return alert('Password cannot be empty');
+            return utils_1.popup('Password cannot be empty');
         }
         if (!utils_1.validEmail(email)) {
-            return alert('Invalid email address');
+            return utils_1.popup('Invalid email address');
         }
         if (password.length < 3 || password.length > 100) {
-            return alert('Password too long or short');
+            return utils_1.popup('Password too long or short');
         }
         hideInputs();
         buttonText.innerText = 'Signing in...';
@@ -164,13 +164,13 @@ const fs = __importStar(require("fs"));
         if (res === null) {
             buttonText.innerText = 'Continue';
             showInputs();
-            return alert('Server error!');
+            return utils_1.popup('Server error!');
         }
         if (!res.success) {
             buttonText.innerText = 'Continue';
             showInputs();
             // TODO: convert msg to something more friendly
-            return alert(res.msg);
+            return utils_1.popup(res.msg);
         }
         buttonText.innerText = 'Authorizing...';
         localStorage.token = res.token;

@@ -1,6 +1,6 @@
 import moment from 'moment-timezone';
 import { Global } from "./global";
-import { create, get } from "./utils";
+import { create, get, popup } from "./utils";
 
 interface ServerMessage {
   dbID?: string;
@@ -209,5 +209,9 @@ export function registerChatEvents(): void {
       renderMessage(data.channel, message);
       roomsData[data.channel].messages.push(message);
     });
+  });
+
+  socket.on('raingo forwarded', () => {
+    popup("Your message has been forwarded successfully");
   });
 }

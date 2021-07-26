@@ -3,7 +3,7 @@
  * Global utility functions
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getElementOffset = exports.create = exports.fadeOut = exports.sleep = exports.authSocket = exports.validEmail = exports.parseJson = exports.request = exports.onAll = exports.on = exports.getAll = exports.get = void 0;
+exports.popup = exports.getElementOffset = exports.create = exports.fadeOut = exports.sleep = exports.authSocket = exports.validEmail = exports.parseJson = exports.request = exports.onAll = exports.on = exports.getAll = exports.get = void 0;
 const global_1 = require("./global");
 function get(selector) {
     return document.querySelector(selector);
@@ -111,3 +111,13 @@ const getElementOffset = (el) => {
     };
 };
 exports.getElementOffset = getElementOffset;
+/**
+ * Displays a message to the users
+ * For now it's just built-in alert(), but we'll rewrite it to something fancier in the future
+ *
+ * @param msg message to be displayed
+ */
+const popup = (msg) => {
+    alert(msg);
+};
+exports.popup = popup;

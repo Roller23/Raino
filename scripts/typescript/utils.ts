@@ -116,3 +116,14 @@ export const getElementOffset = (el: HTMLElement): ElementOffset => {
     top: rect.top + window.scrollY + Math.floor(el.offsetHeight / 2),
   };
 };
+
+/**
+ * Displays a message to the users
+ * For now it's just built-in alert(), but we'll rewrite it to something fancier in the future
+ * 
+ * @param msg message to be displayed
+ */
+
+export const popup = (msg: string): void => {
+  alert(msg)
+}

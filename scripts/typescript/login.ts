@@ -1,7 +1,7 @@
 import io from 'socket.io-client';
 import { registerChatEvents } from './chat';
 import { Global } from './global';
-import { authSocket, fadeOut, get, getAll, parseJson, request, validEmail } from './utils'
+import { authSocket, fadeOut, get, getAll, parseJson, popup, request, validEmail } from './utils'
 import * as fs from 'fs'
 
 (async () => {
@@ -81,7 +81,7 @@ import * as fs from 'fs'
       // TODO: get a new token
       showInputs();
       buttonText.innerText = 'Continue';
-      alert('Could not sign in! Try again');
+      popup('Could not sign in! Try again');
     });
   }
 
@@ -91,22 +91,22 @@ import * as fs from 'fs'
     const password: string = getI('#form-password').value;
     const nickname: string = getI('#form-nickname').value.trim();
     if (!email) {
-      return alert('Email cannot be empty');
+      return popup('Email cannot be empty');
     }
     if (!validEmail(email)) {
-      return alert('Invalid email address');
+      return popup('Invalid email address');
     }
     if (password.length < 3) {
-      return alert('Password too short');
+      return popup('Password too short');
     }
     if (password.length > 100) {
-      return alert('Password too long');
+      return popup('Password too long');
     }
     if (!nickname) {
-      return alert('Nickname cannot be empty');
+      return popup('Nickname cannot be empty');
     }
     if (nickname.length > 20) {
-      return alert('Nickname can be maximum 20 characters');
+      return popup('Nickname can be maximum 20 characters');
     }
     buttonText.innerText = 'Registering...';
     registerInProgress = true;
@@ -117,13 +117,13 @@ import * as fs from 'fs'
     registerInProgress = false;
     buttonText.innerText = 'Continue';
     if (res === null) {
-      return alert('Server error!');
+      return popup('Server error!');
     }
     if (!res.success) {
       // TODO: convert msg to something more friendly
-      return alert(res.msg);
+      return popup(res.msg);
     }
-    alert('Success! You can now sign in');
+    popup('Success! You can now sign in');
     toggleForm(get('#signup-btn')!);
   }
 
@@ -132,16 +132,16 @@ import * as fs from 'fs'
     const email: string = getI('#form-email').value.trim();
     const password: string = getI('#form-password').value;
     if (!email) {
-      return alert('Email cannot be empty');
+      return popup('Email cannot be empty');
     }
     if (!password) {
-      return alert('Password cannot be empty');
+      return popup('Password cannot be empty');
     }
     if (!validEmail(email)) {
-      return alert('Invalid email address');
+      return popup('Invalid email address');
     }
     if (password.length < 3 || password.length > 100) {
-      return alert('Password too long or short');
+      return popup('Password too long or short');
     }
     hideInputs();
     buttonText.innerText = 'Signing in...';
@@ -152,13 +152,13 @@ import * as fs from 'fs'
     if (res === null) {
       buttonText.innerText = 'Continue';
       showInputs();
-      return alert('Server error!');
+      return popup('Server error!');
     }
     if (!res.success) {
       buttonText.innerText = 'Continue';
       showInputs();
       // TODO: convert msg to something more friendly
-      return alert(res.msg);
+      return popup(res.msg);
     }
     buttonText.innerText = 'Authorizing...';
     localStorage.token = res.token;

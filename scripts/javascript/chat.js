@@ -173,5 +173,8 @@ function registerChatEvents() {
             roomsData[data.channel].messages.push(message);
         });
     });
+    socket.on('raingo forwarded', () => {
+        utils_1.popup("Your message has been forwarded successfully");
+    });
 }
 exports.registerChatEvents = registerChatEvents;
