@@ -79,7 +79,7 @@ const fs = __importStar(require("fs"));
     }
     function initSocketAuth() {
         hideInputs();
-        global_1.Global.socket = socket_io_client_1.default('https://raino-backend.glitch.me');
+        global_1.Global.socket = socket_io_client_1.default('https://rainoapp.herokuapp.com');
         global_1.Global.socket.on('connected', () => {
             utils_1.authSocket();
         });
@@ -123,7 +123,7 @@ const fs = __importStar(require("fs"));
         buttonText.innerText = 'Registering...';
         registerInProgress = true;
         const data = { email, password, nickname };
-        const url = 'https://raino-backend.glitch.me/register/';
+        const url = 'https://rainoapp.herokuapp.com/register/';
         const json = await utils_1.request('POST', url, data);
         const res = utils_1.parseJson(json);
         registerInProgress = false;
@@ -158,7 +158,7 @@ const fs = __importStar(require("fs"));
         hideInputs();
         buttonText.innerText = 'Signing in...';
         const data = { email, password };
-        const url = 'https://raino-backend.glitch.me/login/';
+        const url = 'https://rainoapp.herokuapp.com/login/';
         const json = await utils_1.request('POST', url, data);
         const res = utils_1.parseJson(json);
         if (res === null) {
@@ -206,7 +206,7 @@ const fs = __importStar(require("fs"));
         global_1.Global.tokenSelector = null;
         localStorage.removeItem('token');
         localStorage.removeItem('tokenSelector');
-        // await request('POST', 'https://raino-backend.glitch.me/logout/');
+        // await request('POST', 'https://rainoapp.herokuapp.com/logout/');
         window.location.reload();
     });
     button.addEventListener('mouseenter', function (e) {
