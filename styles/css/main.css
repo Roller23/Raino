@@ -225,6 +225,76 @@
   width: 100%;
   height: 100%;
   display: none;
+  background-color: #262626;
+  color: white;
+}
+.welcome-container h1 {
+  margin: 0px;
+}
+.welcome-container .darker {
+  color: #AFAFAF;
+}
+.welcome-container .link {
+  cursor: pointer;
+  color: #90D4CC;
+}
+.welcome-container .inner-wrap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, calc(-50% - 30px));
+  width: 100%;
+  max-width: 1000px;
+}
+.welcome-container .top-wrap {
+  margin: 0px auto 6vw auto;
+  width: 100%;
+  text-align: center;
+}
+.welcome-container .top-wrap .droplet {
+  display: block;
+  margin: 0px auto 20px auto;
+  width: 80px;
+}
+.welcome-container .bottom-wrap {
+  width: 100%;
+  text-align: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.welcome-container .bottom-wrap .cell {
+  width: 100%;
+}
+.welcome-container .bottom-wrap .cell .content {
+  margin: auto;
+  height: 300px;
+  position: relative;
+}
+.welcome-container .bottom-wrap .cell .link {
+  font-size: 22px;
+  font-weight: 600;
+}
+.welcome-container .bottom-wrap .cell-button {
+  cursor: pointer;
+}
+.welcome-container .bottom-wrap .cell-button .icon {
+  display: block;
+  margin: 0px auto 20px auto;
+  width: 100px;
+  border-radius: 10px;
+}
+.welcome-container .bottom-wrap .cell-bottom {
+  position: absolute;
+  bottom: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.welcome-container .help-wrap {
+  font-size: 14px;
+  position: absolute;
+  bottom: 30px;
+  width: 100%;
+  text-align: center;
 }
 
 .main-screen-container {
