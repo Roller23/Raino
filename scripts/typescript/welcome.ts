@@ -1,11 +1,13 @@
 import { fadeIn, fadeOut, get } from "./utils";
 
+const welcomeScreenContainer = get('.welcome-container')!
+
 export async function showWelcomeScreen() {
-  return await fadeIn(get('.welcome-container')!, 400)
+  return await fadeIn(welcomeScreenContainer, 400)
 }
 
 export async function hideWelcomeScreen() {
-  return await fadeOut(get('.welcome-container')!, 400) 
+  return await fadeOut(welcomeScreenContainer, 400) 
 }
 
 get('#welcome-discover')!.addEventListener('click', function(this: HTMLElement, e: Event) {
