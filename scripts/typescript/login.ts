@@ -3,6 +3,7 @@ import { registerChatEvents } from './chat';
 import { Global } from './global';
 import { authSocket, fadeOut, get, getAll, parseJson, popup, request, validEmail } from './utils'
 import * as fs from 'fs'
+import { showWelcomeScreen } from './welcome';
 
 (async () => {
 
@@ -76,6 +77,9 @@ import * as fs from 'fs'
       buttonText.innerText = 'Success!';
       await fadeOut(get('.login-container')!, 400);
       // win.setFullScreen(true); TODO
+      if (true) {
+        await showWelcomeScreen()
+      }
     });
     Global.socket.on('auth denied', () => {
       // TODO: get a new token
