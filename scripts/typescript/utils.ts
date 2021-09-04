@@ -81,6 +81,22 @@ export function fadeOut(el: HTMLElement, ms: number): Promise<void> {
   });
 }
 
+export function fadeIn(el: HTMLElement, ms: number, display: string = 'block'): Promise<void> {
+  return new Promise(resolve => {
+    const oldTransition = el.style.transition;
+    const callback = (): void => {
+      el.style.transition = oldTransition;
+      el.removeEventListener('transitionend', callback);
+      resolve();
+    }
+    el.addEventListener('transitionend', callback);
+    el.style.opacity = '0';
+    el.style.display = display;
+    el.style.transition = `opacity ${ms}ms`;
+    setTimeout(() => el.style.opacity = '1', 10)
+  });
+}
+
 type AttrsObject = {
   [key: string]: string
 };

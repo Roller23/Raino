@@ -3,7 +3,7 @@
  * Global utility functions
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.popup = exports.getElementOffset = exports.create = exports.fadeOut = exports.sleep = exports.authSocket = exports.validEmail = exports.parseJson = exports.request = exports.onAll = exports.on = exports.getAll = exports.get = void 0;
+exports.popup = exports.getElementOffset = exports.create = exports.fadeIn = exports.fadeOut = exports.sleep = exports.authSocket = exports.validEmail = exports.parseJson = exports.request = exports.onAll = exports.on = exports.getAll = exports.get = void 0;
 const global_1 = require("./global");
 function get(selector) {
     return document.querySelector(selector);
@@ -84,6 +84,22 @@ function fadeOut(el, ms) {
     });
 }
 exports.fadeOut = fadeOut;
+function fadeIn(el, ms, display = 'block') {
+    return new Promise(resolve => {
+        const oldTransition = el.style.transition;
+        const callback = () => {
+            el.style.transition = oldTransition;
+            el.removeEventListener('transitionend', callback);
+            resolve();
+        };
+        el.addEventListener('transitionend', callback);
+        el.style.opacity = '0';
+        el.style.display = display;
+        el.style.transition = `opacity ${ms}ms`;
+        setTimeout(() => el.style.opacity = '1', 10);
+    });
+}
+exports.fadeIn = fadeIn;
 function create(tag, attrs = {}, text = '') {
     const res = document.createElement(tag);
     Object.keys(attrs).forEach(key => {

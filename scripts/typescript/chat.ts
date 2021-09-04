@@ -164,12 +164,6 @@ get('.current-server')!.addEventListener('click', e => {
   localStorage.hiddenLeftPanelVisible = get('.hidden-left-panel')!.classList.contains('visible');
 });
 
-// TODO: export default localStorage values to another file
-
-if (!localStorage.hiddenLeftPanelVisible) {
-  localStorage.hiddenLeftPanelVisible = 'true';
-}
-
 if (localStorage.hiddenLeftPanelVisible === 'true') {
   showLeftPanel();
 }
