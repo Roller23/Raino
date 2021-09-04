@@ -3,7 +3,7 @@
  * Global utility functions
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.popup = exports.getElementOffset = exports.create = exports.fadeOut = exports.sleep = exports.authSocket = exports.validEmail = exports.parseJson = exports.request = exports.onAll = exports.on = exports.getAll = exports.get = void 0;
+exports.popup = exports.getElementOffset = exports.create = exports.fadeIn = exports.fadeOut = exports.sleep = exports.authSocket = exports.validEmail = exports.parseJson = exports.request = exports.onAll = exports.on = exports.getAll = exports.get = void 0;
 const global_1 = require("./global");
 function get(selector) {
     return document.querySelector(selector);

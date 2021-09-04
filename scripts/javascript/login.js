@@ -89,8 +89,9 @@ const welcome_1 = require("./welcome");
             buttonText.innerText = 'Success!';
             await utils_1.fadeOut(utils_1.get('.login-container'), 400);
             // win.setFullScreen(true); TODO
-            if (true) {
+            if (localStorage.welcomeScreenShown !== 'true') {
                 await welcome_1.showWelcomeScreen();
+                localStorage.welcomeScreenShown = 'true';
             }
         });
         global_1.Global.socket.on('auth denied', () => {
