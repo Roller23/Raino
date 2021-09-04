@@ -77,8 +77,9 @@ import { showWelcomeScreen } from './welcome';
       buttonText.innerText = 'Success!';
       await fadeOut(get('.login-container')!, 400);
       // win.setFullScreen(true); TODO
-      if (true) {
+      if (!localStorage.welcomeScreenShown) {
         await showWelcomeScreen()
+        localStorage.welcomeScreenShown = true;
       }
     });
     Global.socket.on('auth denied', () => {
