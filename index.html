@@ -3,14 +3,171 @@
 <head>
   <meta charset="UTF-8">
   <title>RAINO</title>
-  <link href='https://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/css/main.css">
 </head>
 <body>
+
+  <div class="main-screen-container">
+    <div class="top-bar">
+      <div class="window-controls">
+        <div class="button closeBtn">
+          <img class="icon" src="images/buttons/closebtn.png" />
+          <img class="icon-hover" src="images/buttons/closebtn-hover.png" />
+        </div>
+        <div class="button minimizeBtn">
+          <img class="icon" src="images/buttons/minbtn.png" />
+          <img class="icon-hover" src="images/buttons/minbtn-hover.png" />
+        </div>
+        <div class="button maximizeBtn">
+          <img class="icon" src="images/buttons/maxbtn.png" />
+          <img class="icon-hover" src="images/buttons/maxbtn-hover.png" />
+        </div>
+        <div class="button restoreBtn">
+          <img class="icon" src="images/buttons/maxbtn.png" />
+          <img class="icon-hover" src="images/buttons/restorebtn-hover.png" />
+        </div>
+      </div>
+    </div>
+    <div class="main-wrapper">
+      <div class="hidden-left-panel">
+        <div class="server-avatar"></div>
+        <div class="server-info">
+          <div class="name">DOMOPEDYCZNA RADA</div>
+          <div class="info">7 users, 5 online</div>
+        </div>
+        <div class="channels-wrap">
+          <div class="text-channels">
+            <div class="section-name">
+              CHATROOMS
+            </div>
+            <div class="channels">
+              <div class="channel selected">
+                <div class="icon"></div>
+                <div class="name">General Kenobi</div>
+              </div>
+              <div class="channel">
+                <div class="icon"></div>
+                <div class="name">Thighs are life</div>
+              </div>
+              <div class="channel">
+                <div class="icon"></div>
+                <div class="name">All your regrets here</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="voice-channels">
+            <div class="section-name">
+              MEETING ROOMS
+            </div>
+            <div class="channels">
+              <div class="channel-wrap">
+                <div class="channel selected">
+                  <div class="icon"></div>
+                  <div class="name">Walkie Talkie</div>
+                </div>
+                <div class="users">
+                  <div class="user">
+                    <div class="avatar" style="background-image: url(images/user-placeholder.png);"></div>
+                    <div class="nick">Mishima</div>
+                  </div>
+                  <div class="user speaking">
+                    <div class="avatar" style="background-image: url(images/user-placeholder.png);"></div>
+                    <div class="nick">Szejzo</div>
+                  </div>
+                </div>
+              </div>
+              <div class="channel-wrap">
+                <div class="channel">
+                  <div class="icon"></div>
+                  <div class="name">Rave party</div>
+                </div>
+                <div class="users">
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="left-panel">
+        <div class="top-section">
+          <div class="element">
+            <img src="images/server-placeholder.jpeg"
+              alt="Current server"
+              class="current-server"
+              tooltip="DOMOPEDYCZNA RADA">
+          </div>
+          <div class="element">
+            <img src="images/buttons/servers.png" alt="Servers" class="icon selectable" tooltip="Servers">
+          </div>
+          <div class="element">
+            <img src="images/buttons/catchup.png" alt="Catchup" class="icon selectable" tooltip="Catchup">
+          </div>
+          <div class="element">
+            <img src="images/buttons/mentions.png" alt="Mentions" class="icon selectable" tooltip="Mentions">
+          </div>
+          <div class="element">
+            <img src="images/buttons/dm.png" alt="Direct messages" class="icon selectable" tooltip="Direct Messages">
+          </div>
+        </div>
+
+        <div class="middle-section">
+          <div class="element">
+            <img src="images/server-placeholder.jpeg" alt="Server" class="server" tooltip="Some server">
+          </div>
+          <div class="element">
+            <img src="images/server-placeholder.jpeg" alt="Server" class="server" tooltip="Some server">
+          </div>
+        </div>
+
+        <div class="bottom-section">
+          <div class="element">
+            <img src="images/user-placeholder.png" alt="User avatar" class="avatar" tooltip="Change status">
+            <div class="status"></div>
+          </div>
+          <div class="element">
+            <img src="images/buttons/settings.png" alt="Settings" class="icon" id="user-settings-btn" tooltip="Settings">
+          </div>
+        </div>
+      </div>
+      <div class="middle-panel">
+        <div class="messages-wrapper"></div>
+        <div class="input-wrapper">
+          <textarea class="message-input" placeholder="Send a message..."></textarea>
+        </div>
+      </div>
+      <div class="right-panel">
+        <button type="button" id="logout">Log out</button>
+      </div>
+    </div>
+  </div>
+
   <div class="login-container">
-    <div class="titlebar"></div>
+    <div class="titlebar">
+      <div class="window-controls">
+        <div class="button closeBtn">
+          <img class="icon" src="images/buttons/closebtn.png" />
+          <img class="icon-hover" src="images/buttons/closebtn-hover.png" />
+        </div>
+        <div class="button minimizeBtn">
+          <img class="icon" src="images/buttons/minbtn.png" />
+          <img class="icon-hover" src="images/buttons/minbtn-hover.png" />
+        </div>
+        <div class="button maximizeBtn">
+          <img class="icon" src="images/buttons/maxbtn.png" />
+          <img class="icon-hover" src="images/buttons/maxbtn-hover.png" />
+        </div>
+        <div class="button restoreBtn">
+          <img class="icon" src="images/buttons/maxbtn.png" />
+          <img class="icon-hover" src="images/buttons/restorebtn-hover.png" />
+        </div>
+      </div>
+    </div>
     <div class="blur-layer"></div>
-    <img class="logo" src="images/logo.png">
+    <img class="logo" src="images/logo11.png">
     <div class="right">
       <div class="header">
         Sign
@@ -19,16 +176,25 @@
           <div class="up">up</div>
         </div>
       </div>
-      <input type="email" placeholder="E-Mail" id="form-email">
-      <input type="password" placeholder="Password" id="form-password">
-      <div class="form-nickname-wrapper">
-        <input type="text" placeholder="Nickname" id="form-nickname">
+      <div class="input-wrapper">
+        <input type="email" placeholder="E-Mail" id="form-email">
+        <input type="password" placeholder="Password" id="form-password">
+        <div class="form-nickname-wrapper">
+          <input type="text" placeholder="Nickname" id="form-nickname">
+        </div>
+        <div class="small">or <span class="sign" id="signup-btn">sign up</span></div>
       </div>
-      <div class="small">or <span class="sign" id="signup-btn">sign up</span></div>
-      <button type="button" class="login">Continue</button>
+      <button type="button" class="login" id="send-login-form">
+        <div class="background"></div>
+        <div class="text">Continue</div>
+      </button>
     </div>
   </div>
-  <script src="scripts/javascript/utils.js"></script>
-  <script src="scripts/javascript/login.js"></script>
+  <script>
+    require('./scripts/javascript/titlebar.js');
+    require('./scripts/javascript/login.js');
+    require('./scripts/javascript/chat.js');
+    require('./scripts/javascript/tooltip.js');
+  </script>
 </body>
 </html>

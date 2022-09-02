@@ -1,135 +1,33 @@
+@import 'colors';
+@import 'global';
+@import 'titlebar';
+@import 'login';
+@import 'main-screen';
+
 body {
   margin: 0px;
   font-family: Arial, Helvetica, sans-serif;
-  font-family: Lato;
+  font-family: 'Inter', sans-serif;
+  background-color: $darkGray;
 }
 
 ::placeholder {
-  font-family: Lato;
+  font-family: 'Inter', sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 14px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: rgb(82, 82, 82);
+  border-radius: 10px;
+  background-clip: padding-box;
+  border: 4px solid rgba(0, 0, 0, 0);
+}
+::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 * {
   box-sizing: border-box;
-}
-
-.titlebar {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  height: 40px;
-  user-select: none;
-  -webkit-app-region: drag;
-}
-
-.login-container {
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-image: url(../../images/bg.gif);
-  .blur-layer {
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    width: 100%;
-    height: 100%;
-    backdrop-filter: blur(4px);
-  }
-  .logo {
-    position: absolute;
-    left: 40px;
-    top: 50px;
-    color: white;
-    display: block;
-    width: 120px;
-    user-select: none;
-  }
-  .right {
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    backdrop-filter: blur(20px);
-    background-color: rgba(66, 66, 66, 0.274);
-    height: 100%;
-    width: 300px;
-    border-left: 1px solid rgb(78, 78, 78);
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
-    .header {
-      color: white;
-      font-size: 40px;
-      height: 40px;
-      font-weight: bold;
-      margin-bottom: 10px;
-      .swap-wrap {
-        display: inline-block;
-        height: 100%;
-        vertical-align: top;
-        .in, .up {
-          transition: 0.3s;
-        }
-        .in {
-          height: 100%;
-          overflow: hidden;
-        }
-        .up {
-          height: 0%;
-          opacity: 0;
-        }
-      }
-    }
-    input {
-      width: 100%;
-      padding: 8px 10px;
-      color: lightgray;
-      display: block;
-      margin: 10px 0px;
-      outline: none;
-      background-color: rgba(66, 66, 66, 0);
-      border: 1px solid rgb(175, 175, 175);
-      border-radius: 15px;
-      &::placeholder {
-        color: rgb(175, 175, 175);
-      }
-    }
-    .form-nickname-wrapper {
-      width: 100%;
-      height: 0px;
-      transition: 0.3s;
-      overflow: hidden;
-    }
-    .small {
-      color: rgb(175, 175, 175);
-      font-size: 12px;
-      margin-left: 5px;
-      overflow: hidden;
-      transition: 0.3s;
-      .sign {
-        color: white;
-        text-decoration: underline;
-        cursor: pointer;
-      }
-    }
-    .login {
-      display: block;
-      margin-top: 20px;
-      border: 0px;
-      background-color: rgb(163, 28, 28);
-      padding: 10px 100px;
-      color: white;
-      font-weight: bold;
-      border-radius: 20px;
-      cursor: pointer;
-      outline: none;
-      box-shadow: 1px 1px 7px 1px #252525;
-    }
-  }
 }
