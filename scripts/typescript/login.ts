@@ -67,7 +67,7 @@ import * as fs from 'fs'
 
   function initSocketAuth() {
     hideInputs();
-    Global.socket = io('https://rainoapp.herokuapp.com');
+    Global.socket = io('https://rainoapp.glitch.me');
     Global.socket.on('connected', () => {
       authSocket();
     });
@@ -111,7 +111,7 @@ import * as fs from 'fs'
     buttonText.innerText = 'Registering...';
     registerInProgress = true;
     const data = {email, password, nickname};
-    const url = 'https://rainoapp.herokuapp.com/register/';
+    const url = 'https://rainoapp.glitch.me/register/';
     const json = await request('POST', url, data);
     const res = parseJson(json);
     registerInProgress = false;
@@ -146,7 +146,7 @@ import * as fs from 'fs'
     hideInputs();
     buttonText.innerText = 'Signing in...';
     const data = {email, password};
-    const url = 'https://rainoapp.herokuapp.com/login/';
+    const url = 'https://rainoapp.glitch.me/login/';
     const json = await request('POST', url, data);
     const res = parseJson(json);
     if (res === null) {
@@ -197,7 +197,7 @@ import * as fs from 'fs'
     Global.tokenSelector = null;
     localStorage.removeItem('token');
     localStorage.removeItem('tokenSelector');
-    // await request('POST', 'https://rainoapp.herokuapp.com/logout/');
+    // await request('POST', 'https://rainoapp.glitch.me/logout/');
     window.location.reload();
   });
 
