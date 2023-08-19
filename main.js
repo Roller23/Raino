@@ -5,8 +5,8 @@ let tray = null
 
 function createWindow () {
   const win = new BrowserWindow({
-    width: 900,
-    height: 600,
+    width: 1000,
+    height: 700,
     frame: isMacOS,
     titleBarStyle: 'hidden',
     webPreferences: {
